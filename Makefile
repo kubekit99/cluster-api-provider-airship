@@ -22,7 +22,7 @@ install: manifests
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 deploy: manifests
-        cat provider-components.yaml | kubectl apply -f -
+	cat provider-components.yaml | kubectl apply -f -
 
 # Generate manifests e.g. CRD, RBAC etc.
 manifests:
