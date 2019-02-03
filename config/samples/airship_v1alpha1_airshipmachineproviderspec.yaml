@@ -1,0 +1,9 @@
+apiVersion: airship.kubekit.cloud/v1alpha1
+kind: AirshipMachineProviderSpec
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: airshipmachineproviderspec-sample
+spec:
+  # Add fields here
+  foo: bar
