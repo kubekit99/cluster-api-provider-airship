@@ -100,6 +100,33 @@ git push origin --force --all
 git clone https://github.com/kubekit99/cluster-api-provider-airship.git
 ```
 
+## Rebuild images
+
+List of commands used to rebuild and publish the images.
+
+```bash
+export IMG=kubekit99/cluster-api-provider-airship
+dep ensure
+make
+make docker-build IMG=${IMG}
+make docker-push IMG=${IMG}
+```
+
 ## Deployment and tests
 
+List of commands to deploy and test.
+
+Ensure that /usr/local/kubebuilder is no longer in your path if you are using the same machine
+
+
+```bash
+kubectl get nodes
+kubectl apply -f provider-components.yaml
+kubectl get all --all-namespaces
+kubectl logs pod/cluster-api-provider-airship-controller-manager-0 -n cluster-api-provider-airship-system manager
+```
+
 TBD
+
+
+
