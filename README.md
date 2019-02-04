@@ -128,5 +128,9 @@ kubectl logs pod/cluster-api-provider-airship-controller-manager-0 -n cluster-ap
 
 TBD
 
+## Testing clusterctl
 
-
+```bash
+make clusterctl
+./bin/clusterctl create cluster --cluster cmd/clusterctl/examples/airship/cluster.yaml --machines cmd/clusterctl/examples/airship/machines.yaml --addon-components cmd/clusterctl/examples/airship/addons.yaml --provider-components ./provider-components.yaml 
+```
