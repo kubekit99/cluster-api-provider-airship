@@ -171,7 +171,7 @@ spec:
               fieldPath: metadata.namespace
         - name: SECRET_NAME
           value: cluster-api-provider-airship-webhook-server-secret
-        image: kubedge2/cluster-api-provider-kubedge
+        image: kubekit99/cluster-api-provider-airship
         imagePullPolicy: Always
         name: manager
         ports:

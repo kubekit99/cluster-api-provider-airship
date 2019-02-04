@@ -12,6 +12,11 @@ test: generate fmt vet manifests
 manager: generate fmt vet
 	go build -o bin/manager github.com/kubekit99/cluster-api-provider-airship/cmd/manager
 
+# Build clusterctl binary
+clusterctl: generate fmt vet
+	go build -o bin/clusterctl github.com/kubekit99/cluster-api-provider-airship/cmd/clusterctl
+
+
 # Run against the configured Kubernetes cluster in ~/.kube/config
 run: generate fmt vet
 	go run ./cmd/manager/main.go
