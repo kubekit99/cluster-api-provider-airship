@@ -20,7 +20,7 @@ import (
 	"log"
 
 	"github.com/kubekit99/cluster-api-provider-airship/cmd/versioninfo"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators/cluster"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators/machine"
 	"sigs.k8s.io/cluster-api/cmd/clusterctl/cmd"
 	"sigs.k8s.io/cluster-api/pkg/apis/cluster/common"
 )
@@ -30,11 +30,11 @@ func registerCustomCommands() {
 }
 
 func main() {
-	clusterActuator, err := cluster.NewActuator(cluster.ActuatorParams{})
+	machineActuator, err := machine.NewActuator(machine.ActuatorParams{})
 	if err != nil {
 		log.Fatalf("Error creating cluster provisioner for airship : %v", err)
 	}
-	common.RegisterClusterProvisioner("airship", clusterActuator)
+	common.RegisterClusterProvisioner("airship", machineActuator)
 	registerCustomCommands()
 	cmd.Execute()
 }

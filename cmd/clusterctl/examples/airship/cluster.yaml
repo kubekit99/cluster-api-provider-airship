@@ -1,7 +1,7 @@
 apiVersion: "cluster.k8s.io/v1alpha1"
 kind: Cluster
 metadata:
-  name: ${CLUSTER_NAME}
+  name: simple
 spec:
   clusterNetwork:
     services:
@@ -13,5 +13,5 @@ spec:
     value:
       apiVersion: "airshipprovider/v1alpha1"
       kind: "AirshipClusterProviderSpec"
-      resourceGroup: "${RESOURCE_GROUP}"
-      location: "${LOCATION}"
+      # resourceGroup: "${RESOURCE_GROUP}"
+      # location: "${LOCATION}"

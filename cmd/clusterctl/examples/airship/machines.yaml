@@ -40,7 +40,6 @@ items:
     spec:
       versions:
         kubelet: 1.12.5
-        controlPlane: 1.12.5
       providerSpec:
         value:
           apiVersion: airshipprovider/v1alpha1

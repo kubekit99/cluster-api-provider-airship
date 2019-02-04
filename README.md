@@ -132,5 +132,5 @@ TBD
 
 ```bash
 make clusterctl
-./bin/clusterctl create cluster --cluster cmd/clusterctl/examples/airship/cluster.yaml --machines cmd/clusterctl/examples/airship/machines.yaml --addon-components cmd/clusterctl/examples/airship/addons.yaml --provider-components ./provider-components.yaml 
+./bin/clusterctl create cluster --cluster cmd/clusterctl/examples/airship/cluster.yaml --machines cmd/clusterctl/examples/airship/machines.yaml --addon-components cmd/clusterctl/examples/airship/addons.yaml --provider-components cmd/clusterctl/examples/airship/provider-components.yaml --provider airship
 ```
