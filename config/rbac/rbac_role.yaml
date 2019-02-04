@@ -17,22 +17,27 @@ rules:
   - update
   - patch
   - delete
+#- apiGroups:
+#  - airshipproviderconfig.k8s.io
+#  resources:
+#  - airshipclusterproviderconfigs
+#  - airshipmachineproviderconfigs
+#  verbs:
+#  - get
+#  - list
+#  - watch
+#  - create
+#  - update
+#  - patch
+#  - delete
 - apiGroups:
-  - ""
+  - cluster.k8s.io
   resources:
-  - secrets
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - services
+  - clusters
+  - machines
+  - machines/status
+  - machinedeployments
+  - machinesets
   verbs:
   - get
   - list

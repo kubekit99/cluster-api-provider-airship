@@ -26,21 +26,13 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - ""
+  - cluster.k8s.io
   resources:
-  - secrets
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - services
+  - clusters
+  - machines
+  - machines/status
+  - machinedeployments
+  - machinesets
   verbs:
   - get
   - list
@@ -179,7 +171,7 @@ spec:
               fieldPath: metadata.namespace
         - name: SECRET_NAME
           value: cluster-api-provider-airship-webhook-server-secret
-        image: kubekit99/cluster-api-provider-airship
+        image: kubedge2/cluster-api-provider-kubedge
         imagePullPolicy: Always
         name: manager
         ports:
