@@ -103,11 +103,11 @@ func convertMachineToDeploymentParams(machine *clusterv1.Machine, machineConfig 
 	if err != nil {
 		return nil, err
 	}
-	decoded, err := base64.StdEncoding.DecodeString(machineConfig.SSHPublicKey)
-	publicKey := string(decoded)
-	if err != nil {
-		return nil, err
-	}
+	// decoded, err := base64.StdEncoding.DecodeString(machineConfig.SSHPublicKey)
+	// publicKey := string(decoded)
+	// if err != nil {
+	// 	return nil, err
+	// }
 	params := map[string]interface{}{
 		"clusterAPI_machine_name": map[string]interface{}{
 			"value": machine.ObjectMeta.Name,
@@ -130,45 +130,45 @@ func convertMachineToDeploymentParams(machine *clusterv1.Machine, machineConfig 
 		"subnets_default_name": map[string]interface{}{
 			"value": network.SubnetDefaultName,
 		},
-		"image_publisher": map[string]interface{}{
-			"value": machineConfig.Image.Publisher,
-		},
-		"image_offer": map[string]interface{}{
-			"value": machineConfig.Image.Offer,
-		},
-		"image_sku": map[string]interface{}{
-			"value": machineConfig.Image.SKU,
-		},
-		"image_version": map[string]interface{}{
-			"value": machineConfig.Image.Version,
-		},
+		// "image_publisher": map[string]interface{}{
+		// 	"value": machineConfig.Image.Publisher,
+		// },
+		// "image_offer": map[string]interface{}{
+		// 	"value": machineConfig.Image.Offer,
+		// },
+		// "image_sku": map[string]interface{}{
+		// 	"value": machineConfig.Image.SKU,
+		// },
+		// "image_version": map[string]interface{}{
+		// 	"value": machineConfig.Image.Version,
+		// },
 		"osDisk_name": map[string]interface{}{
 			"value": GetOSDiskName(machine),
 		},
-		"os_type": map[string]interface{}{
-			"value": machineConfig.OSDisk.OSType,
-		},
-		"storage_account_type": map[string]interface{}{
-			"value": machineConfig.OSDisk.ManagedDisk.StorageAccountType,
-		},
-		"disk_size_GB": map[string]interface{}{
-			"value": machineConfig.OSDisk.DiskSizeGB,
-		},
+		// "os_type": map[string]interface{}{
+		// 	"value": machineConfig.OSDisk.OSType,
+		// },
+		// "storage_account_type": map[string]interface{}{
+		// 	"value": machineConfig.OSDisk.ManagedDisk.StorageAccountType,
+		// },
+		// "disk_size_GB": map[string]interface{}{
+		// 	"value": machineConfig.OSDisk.DiskSizeGB,
+		// },
 		"vm_user": map[string]interface{}{
 			"value": "ClusterAPI",
 		},
-		"vm_size": map[string]interface{}{
-			"value": machineConfig.VMSize,
-		},
-		"location": map[string]interface{}{
-			"value": machineConfig.Location,
-		},
+		// "vm_size": map[string]interface{}{
+		// 	"value": machineConfig.VMSize,
+		// },
+		// "location": map[string]interface{}{
+		// 	"value": machineConfig.Location,
+		// },
 		"startup_script": map[string]interface{}{
 			"value": *base64EncodeCommand(startupScript),
 		},
-		"sshPublicKey": map[string]interface{}{
-			"value": publicKey,
-		},
+		// "sshPublicKey": map[string]interface{}{
+		// 	"value": publicKey,
+		// },
 	}
 	return &params, nil
 }

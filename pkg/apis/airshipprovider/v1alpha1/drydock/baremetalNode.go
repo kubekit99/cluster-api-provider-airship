@@ -2,6 +2,9 @@
 
 package drydock
 
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
 // AddressingItems
 type AddressingItems struct {
 	Address string `json:"address,omitempty"`

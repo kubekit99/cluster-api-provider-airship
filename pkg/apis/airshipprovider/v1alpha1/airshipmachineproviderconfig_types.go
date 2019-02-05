@@ -30,12 +30,7 @@ type AirshipMachineProviderSpec struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	Roles         []MachineRole `json:"roles,omitempty"`
-	Location      string        `json:"location"`
-	VMSize        string        `json:"vmSize"`
-	Image         Image         `json:"image"`
-	OSDisk        OSDisk        `json:"osDisk"`
-	SSHPublicKey  string        `json:"sshPublicKey"`
-	SSHPrivateKey string        `json:"sshPrivateKey"`
+	BaremetalSpec BaremetalSpec `json:"baremetalspec"`
 }
 type MachineRole string
 
@@ -43,23 +38,6 @@ const (
 	Master MachineRole = "Master"
 	Node   MachineRole = "Node"
 )
-
-type Image struct {
-	Publisher string `json:"publisher"`
-	Offer     string `json:"offer"`
-	SKU       string `json:"sku"`
-	Version   string `json:"version"`
-}
-
-type OSDisk struct {
-	OSType      string      `json:"osType"`
-	ManagedDisk ManagedDisk `json:"managedDisk"`
-	DiskSizeGB  int         `json:"diskSizeGB"`
-}
-
-type ManagedDisk struct {
-	StorageAccountType string `json:"storageAccountType"`
-}
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 

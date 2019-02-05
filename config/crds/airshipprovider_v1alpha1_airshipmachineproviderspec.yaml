@@ -16,64 +16,59 @@ spec:
       properties:
         apiVersion:
           type: string
-        image:
+        baremetalspec:
           properties:
-            offer:
-              type: string
-            publisher:
-              type: string
-            sku:
-              type: string
-            version:
-              type: string
-          required:
-          - publisher
-          - offer
-          - sku
-          - version
+            addressing:
+              items:
+                properties:
+                  address:
+                    type: string
+                  network:
+                    type: string
+                type: object
+              type: array
+            interfaces:
+              type: object
+            metadata:
+              properties:
+                rack:
+                  type: string
+                tags:
+                  items:
+                    type: string
+                  type: array
+              type: object
+            oob:
+              properties:
+                account:
+                  type: string
+                credetial:
+                  type: string
+                network:
+                  type: string
+                type:
+                  type: string
+              type: object
+            platform:
+              properties:
+                image:
+                  type: string
+                kernel:
+                  type: string
+              type: object
+            storage:
+              type: object
           type: object
         kind:
           type: string
-        location:
-          type: string
         metadata:
-          type: object
-        osDisk:
-          properties:
-            diskSizeGB:
-              format: int64
-              type: integer
-            managedDisk:
-              properties:
-                storageAccountType:
-                  type: string
-              required:
-              - storageAccountType
-              type: object
-            osType:
-              type: string
-          required:
-          - osType
-          - managedDisk
-          - diskSizeGB
           type: object
         roles:
           items:
             type: string
           type: array
-        sshPrivateKey:
-          type: string
-        sshPublicKey:
-          type: string
-        vmSize:
-          type: string
       required:
-      - location
-      - vmSize
-      - image
-      - osDisk
-      - sshPublicKey
-      - sshPrivateKey
+      - baremetalspec
   version: v1alpha1
 status:
   acceptedNames:

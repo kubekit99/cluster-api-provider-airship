@@ -18,10 +18,10 @@ package machine
 
 import (
 	"context"
-	"encoding/base64"
+	// "encoding/base64"
 	"fmt"
 	"io/ioutil"
-	"os"
+	// "os"
 	"reflect"
 	"strings"
 	"time"
@@ -33,7 +33,7 @@ import (
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/resources"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/deployer"
 	"github.com/pkg/errors"
-	"github.com/pkg/sftp"
+	// "github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 	"k8s.io/klog"
 	clusterv1 "sigs.k8s.io/cluster-api/pkg/apis/cluster/v1alpha1"
@@ -321,41 +321,43 @@ func (a *Actuator) GetKubeConfig(cluster *clusterv1.Cluster, machine *clusterv1.
 	defer scope.Close()
 
 	networkSvc := network.NewService(scope.Scope)
+	_ = networkSvc
 
-	decoded, err := base64.StdEncoding.DecodeString(scope.MachineConfig.SSHPrivateKey)
-	privateKey := string(decoded)
-	if err != nil {
-		return "", err
-	}
+	// JEB: Seems to be collected the ./.kube/config from remote machine.
+	// decoded, err := base64.StdEncoding.DecodeString(scope.MachineConfig.SSHPrivateKey)
+	// privateKey := string(decoded)
+	// if err != nil {
+	// 	return "", err
+	// }
 
-	ip, err := networkSvc.GetPublicIPAddress(scope.ClusterConfig.ResourceGroup, resources.GetPublicIPName(machine))
-	if err != nil {
-		return "", fmt.Errorf("error getting public ip address: %v ", err)
-	}
-	sshclient, err := GetSSHClient(ip.IPAddress, privateKey)
-	if err != nil {
-		return "", fmt.Errorf("unable to get ssh client: %v", err)
-	}
-	sftpClient, err := sftp.NewClient(sshclient)
-	if err != nil {
-		return "", fmt.Errorf("Error setting sftp client: %s", err)
-	}
+	// ip, err := networkSvc.GetPublicIPAddress(scope.ClusterConfig.ResourceGroup, resources.GetPublicIPName(machine))
+	// if err != nil {
+	// 	return "", fmt.Errorf("error getting public ip address: %v ", err)
+	// }
+	// sshclient, err := GetSSHClient(ip.IPAddress, privateKey)
+	// if err != nil {
+	// 	return "", fmt.Errorf("unable to get ssh client: %v", err)
+	// }
+	// sftpClient, err := sftp.NewClient(sshclient)
+	// if err != nil {
+	// 	return "", fmt.Errorf("Error setting sftp client: %s", err)
+	// }
 
-	remoteFile := fmt.Sprintf("/home/%s/.kube/config", SSHUser)
-	srcFile, err := sftpClient.Open(remoteFile)
-	if err != nil {
-		return "", fmt.Errorf("Error opening %s: %s", remoteFile, err)
-	}
+	// remoteFile := fmt.Sprintf("/home/%s/.kube/config", SSHUser)
+	// srcFile, err := sftpClient.Open(remoteFile)
+	// if err != nil {
+	// 	return "", fmt.Errorf("Error opening %s: %s", remoteFile, err)
+	// }
 
-	defer srcFile.Close()
+	// defer srcFile.Close()
 	dstFileName := "kubeconfig"
-	dstFile, err := os.Create(dstFileName)
-	if err != nil {
-		return "", fmt.Errorf("unable to write local kubeconfig: %v", err)
-	}
+	// dstFile, err := os.Create(dstFileName)
+	// if err != nil {
+	// 	return "", fmt.Errorf("unable to write local kubeconfig: %v", err)
+	// }
 
-	defer dstFile.Close()
-	srcFile.WriteTo(dstFile)
+	// defer dstFile.Close()
+	// srcFile.WriteTo(dstFile)
 
 	content, err := ioutil.ReadFile(dstFileName)
 	if err != nil {
