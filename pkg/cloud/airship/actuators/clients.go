@@ -18,30 +18,29 @@ package actuators
 
 import (
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/armada"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/deckhand"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/drydock"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/resources"
 	providerv1 "github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
 	clusterv1 "sigs.k8s.io/cluster-api/pkg/apis/cluster/v1alpha1"
 )
 
 // AirshipClients contains all the Airship clients used by the scopes.
 type AirshipClients struct {
-	// TODO: Remove legacy clients once interfaces are reimplemented
-	Drydock   AirshipDrydockClient
-	Network   AirshipNetworkClient
-	Resources AirshipResourcesClient
+	Drydock  AirshipDrydockClient
+	Armada   AirshipArmadaClient
+	Deckhand AirshipDeckhandClient
 
 	// Drydock
 	VM    drydock.VirtualMachinesClient
 	Disks drydock.DisksClient
 
 	// Network
-	VirtualNetworks   network.VirtualNetworksClient
-	SecurityGroups    network.SecurityGroupsClient
-	Interfaces        network.InterfacesClient
-	LB                network.LoadBalancersClient
-	PublicIPAddresses network.PublicIPAddressesClient
+	VirtualNetworks   armada.VirtualNetworksClient
+	SecurityGroups    armada.SecurityGroupsClient
+	Interfaces        armada.InterfacesClient
+	LB                armada.LoadBalancersClient
+	PublicIPAddresses armada.PublicIPAddressesClient
 
 	// Resources
 	Groups      resources.GroupsClient
@@ -63,29 +62,29 @@ type AirshipDrydockClient interface {
 	WaitForDisksDeleteFuture(future drydock.DisksDeleteFuture) error
 }
 
-// AirshipNetworkClient defines the operations that will interact with the Airship Network API
-type AirshipNetworkClient interface {
+// AirshipArmadaClient defines the operations that will interact with the Airship Network API
+type AirshipArmadaClient interface {
 	// Network Interfaces Operations
-	DeleteNetworkInterface(resourceGroupName string, networkInterfaceName string) (network.InterfacesDeleteFuture, error)
-	WaitForNetworkInterfacesDeleteFuture(future network.InterfacesDeleteFuture) error
+	DeleteNetworkInterface(resourceGroupName string, networkInterfaceName string) (armada.InterfacesDeleteFuture, error)
+	WaitForNetworkInterfacesDeleteFuture(future armada.InterfacesDeleteFuture) error
 
 	// Network Security Groups Operations
-	CreateOrUpdateNetworkSecurityGroup(resourceGroupName string, networkSecurityGroupName string, location string) (*network.SecurityGroupsCreateOrUpdateFuture, error)
-	NetworkSGIfExists(resourceGroupName string, networkSecurityGroupName string) (*network.SecurityGroup, error)
-	WaitForNetworkSGsCreateOrUpdateFuture(future network.SecurityGroupsCreateOrUpdateFuture) error
+	CreateOrUpdateNetworkSecurityGroup(resourceGroupName string, networkSecurityGroupName string, location string) (*armada.SecurityGroupsCreateOrUpdateFuture, error)
+	NetworkSGIfExists(resourceGroupName string, networkSecurityGroupName string) (*armada.SecurityGroup, error)
+	WaitForNetworkSGsCreateOrUpdateFuture(future armada.SecurityGroupsCreateOrUpdateFuture) error
 
 	// Public Ip Address Operations
-	GetPublicIPAddress(resourceGroupName string, IPName string) (network.PublicIPAddress, error)
-	DeletePublicIPAddress(resourceGroup string, IPName string) (network.PublicIPAddressesDeleteFuture, error)
-	WaitForPublicIPAddressDeleteFuture(future network.PublicIPAddressesDeleteFuture) error
+	GetPublicIPAddress(resourceGroupName string, IPName string) (armada.PublicIPAddress, error)
+	DeletePublicIPAddress(resourceGroup string, IPName string) (armada.PublicIPAddressesDeleteFuture, error)
+	WaitForPublicIPAddressDeleteFuture(future armada.PublicIPAddressesDeleteFuture) error
 
 	// Virtual Networks Operations
-	CreateOrUpdateVnet(resourceGroupName string, virtualNetworkName string, location string) (*network.VirtualNetworksCreateOrUpdateFuture, error)
-	WaitForVnetCreateOrUpdateFuture(future network.VirtualNetworksCreateOrUpdateFuture) error
+	CreateOrUpdateVnet(resourceGroupName string, virtualNetworkName string, location string) (*armada.VirtualNetworksCreateOrUpdateFuture, error)
+	WaitForVnetCreateOrUpdateFuture(future armada.VirtualNetworksCreateOrUpdateFuture) error
 }
 
-// AirshipResourcesClient defines the operations that will interact with the Airship Resources API
-type AirshipResourcesClient interface {
+// AirshipDeckhandClient defines the operations that will interact with the Airship Resources API
+type AirshipDeckhandClient interface {
 	// Resource Groups Operations
 	CreateOrUpdateGroup(resourceGroupName string, location string) (resources.Group, error)
 	DeleteGroup(resourceGroupName string) (resources.GroupsDeleteFuture, error)

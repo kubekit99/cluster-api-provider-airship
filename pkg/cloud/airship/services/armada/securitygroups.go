@@ -14,12 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package network
+package armada
 
 import (
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/armada"
 )
 
 const (
@@ -28,7 +28,7 @@ const (
 )
 
 // NetworkSGIfExists returns the nsg reference if the nsg resource exists.
-func (s *Service) NetworkSGIfExists(resourceGroupName string, networkSecurityGroupName string) (*network.SecurityGroup, error) {
+func (s *Service) NetworkSGIfExists(resourceGroupName string, networkSecurityGroupName string) (*armada.SecurityGroup, error) {
 	//JEB networkSG, err := s.scope.AirshipClients.SecurityGroups.Get(s.scope.Context, resourceGroupName, networkSecurityGroupName, "")
 	//JEB if err != nil {
 	//JEB 		if aerr, ok := err.(autorest.DetailedError); ok {
@@ -43,42 +43,42 @@ func (s *Service) NetworkSGIfExists(resourceGroupName string, networkSecurityGro
 }
 
 // CreateOrUpdateNetworkSecurityGroup creates or updates the nsg resource.
-func (s *Service) CreateOrUpdateNetworkSecurityGroup(resourceGroupName string, networkSecurityGroupName string, location string) (*network.SecurityGroupsCreateOrUpdateFuture, error) {
+func (s *Service) CreateOrUpdateNetworkSecurityGroup(resourceGroupName string, networkSecurityGroupName string, location string) (*armada.SecurityGroupsCreateOrUpdateFuture, error) {
 	//JEB if networkSecurityGroupName == "" {
 	//JEB networkSecurityGroupName = SecurityGroupDefaultName
 	//JEB }
-	//JEB sshInbound := network.SecurityRule{
+	//JEB sshInbound := armada.SecurityRule{
 	//JEB Name: to.StringPtr("ClusterAPISSH"),
-	//JEB SecurityRulePropertiesFormat: &network.SecurityRulePropertiesFormat{
-	//JEB Protocol:                 network.SecurityRuleProtocolTCP,
+	//JEB SecurityRulePropertiesFormat: &armada.SecurityRulePropertiesFormat{
+	//JEB Protocol:                 armada.SecurityRuleProtocolTCP,
 	//JEB SourcePortRange:          to.StringPtr("*"),
 	//JEB DestinationPortRange:     to.StringPtr("22"),
 	//JEB SourceAddressPrefix:      to.StringPtr("*"),
 	//JEB DestinationAddressPrefix: to.StringPtr("*"),
 	//JEB Priority:                 to.Int32Ptr(1000),
-	//JEB Direction:                network.SecurityRuleDirectionInbound,
-	//JEB Access:                   network.SecurityRuleAccessAllow,
+	//JEB Direction:                armada.SecurityRuleDirectionInbound,
+	//JEB Access:                   armada.SecurityRuleAccessAllow,
 	//JEB },
 	//JEB }
 	//JEB
-	//JEB kubernetesInbound := network.SecurityRule{
+	//JEB kubernetesInbound := armada.SecurityRule{
 	//JEB Name: to.StringPtr("KubernetesAPI"),
-	//JEB SecurityRulePropertiesFormat: &network.SecurityRulePropertiesFormat{
-	//JEB Protocol:                 network.SecurityRuleProtocolTCP,
+	//JEB SecurityRulePropertiesFormat: &armada.SecurityRulePropertiesFormat{
+	//JEB Protocol:                 armada.SecurityRuleProtocolTCP,
 	//JEB SourcePortRange:          to.StringPtr("*"),
 	//JEB DestinationPortRange:     to.StringPtr("6443"),
 	//JEB SourceAddressPrefix:      to.StringPtr("*"),
 	//JEB DestinationAddressPrefix: to.StringPtr("*"),
 	//JEB Priority:                 to.Int32Ptr(1001),
-	//JEB Direction:                network.SecurityRuleDirectionInbound,
-	//JEB Access:                   network.SecurityRuleAccessAllow,
+	//JEB Direction:                armada.SecurityRuleDirectionInbound,
+	//JEB Access:                   armada.SecurityRuleAccessAllow,
 	//JEB },
 	//JEB }
 	//JEB
-	//JEB securityGroupProperties := network.SecurityGroupPropertiesFormat{
-	//JEB SecurityRules: &[]network.SecurityRule{sshInbound, kubernetesInbound},
+	//JEB securityGroupProperties := armada.SecurityGroupPropertiesFormat{
+	//JEB SecurityRules: &[]armada.SecurityRule{sshInbound, kubernetesInbound},
 	//JEB }
-	//JEB securityGroup := network.SecurityGroup{
+	//JEB securityGroup := armada.SecurityGroup{
 	//JEB Location:                      to.StringPtr(location),
 	//JEB SecurityGroupPropertiesFormat: &securityGroupProperties,
 	//JEB }
@@ -91,13 +91,13 @@ func (s *Service) CreateOrUpdateNetworkSecurityGroup(resourceGroupName string, n
 }
 
 // DeleteNetworkSecurityGroup deletes the nsg resource.
-func (s *Service) DeleteNetworkSecurityGroup(resourceGroupName string, networkSecurityGroupName string) (network.SecurityGroupsDeleteFuture, error) {
+func (s *Service) DeleteNetworkSecurityGroup(resourceGroupName string, networkSecurityGroupName string) (armada.SecurityGroupsDeleteFuture, error) {
 	//JEB return s.scope.AirshipClients.SecurityGroups.Delete(s.scope.Context, resourceGroupName, networkSecurityGroupName)
-	return network.SecurityGroupsDeleteFuture{}, nil
+	return armada.SecurityGroupsDeleteFuture{}, nil
 }
 
 // WaitForNetworkSGsCreateOrUpdateFuture returns when the CreateOrUpdateNetworkSecurityGroup operation completes.
-func (s *Service) WaitForNetworkSGsCreateOrUpdateFuture(future network.SecurityGroupsCreateOrUpdateFuture) error {
+func (s *Service) WaitForNetworkSGsCreateOrUpdateFuture(future armada.SecurityGroupsCreateOrUpdateFuture) error {
 	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.SecurityGroups.Client)
 	return nil
 }

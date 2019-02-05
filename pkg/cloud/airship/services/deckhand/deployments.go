@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package resources
+package deckhand
 
 import (
 	"encoding/base64"
@@ -23,9 +23,9 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/resources"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/deckhand"
 	providerv1 "github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/network"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/armada"
 	clusterv1 "sigs.k8s.io/cluster-api/pkg/apis/cluster/v1alpha1"
 )
 
@@ -113,7 +113,7 @@ func convertMachineToDeploymentParams(machine *clusterv1.Machine, machineConfig 
 			"value": machine.ObjectMeta.Name,
 		},
 		"virtualNetworks_ClusterAPIVM_vnet_name": map[string]interface{}{
-			"value": network.VnetDefaultName,
+			"value": armada.VnetDefaultName,
 		},
 		"virtualMachines_ClusterAPIVM_name": map[string]interface{}{
 			"value": GetVMName(machine),
@@ -128,7 +128,7 @@ func convertMachineToDeploymentParams(machine *clusterv1.Machine, machineConfig 
 			"value": "ClusterAPINSG",
 		},
 		"subnets_default_name": map[string]interface{}{
-			"value": network.SubnetDefaultName,
+			"value": armada.SubnetDefaultName,
 		},
 		// "image_publisher": map[string]interface{}{
 		// 	"value": machineConfig.Image.Publisher,

@@ -21,9 +21,9 @@ import (
 
 	providerv1 "github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/armada"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/certificates"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/network"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/resources"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/deckhand"
 	"github.com/pkg/errors"
 	"k8s.io/client-go/tools/clientcmd"
 	clusterv1 "sigs.k8s.io/cluster-api/pkg/apis/cluster/v1alpha1"
@@ -58,9 +58,9 @@ func (d *Deployer) GetIP(cluster *clusterv1.Cluster, machine *clusterv1.Machine)
 		return scope.ClusterStatus.Network.APIServerIP.IPAddress, nil
 	}
 
-	pipsvc := network.NewService(scope)
+	pipsvc := armada.NewService(scope)
 
-	pip, err := pipsvc.GetPublicIPAddress(scope.ClusterConfig.ResourceGroup, resources.GetPublicIPName(machine))
+	pip, err := pipsvc.GetPublicIPAddress(scope.ClusterConfig.ResourceGroup, deckhand.GetPublicIPName(machine))
 	if err != nil {
 		return "", err
 	}

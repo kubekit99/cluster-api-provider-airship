@@ -14,18 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package network
+package armada
 
-import "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
+import "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/armada"
 
 // DeleteNetworkInterface deletes the NIC resource.
-func (s *Service) DeleteNetworkInterface(resourceGroup string, networkInterfaceName string) (network.InterfacesDeleteFuture, error) {
+func (s *Service) DeleteNetworkInterface(resourceGroup string, networkInterfaceName string) (armada.InterfacesDeleteFuture, error) {
 	//JEB return s.scope.AirshipClients.Interfaces.Delete(s.scope.Context, resourceGroup, networkInterfaceName)
-	return network.InterfacesDeleteFuture{}, nil
+	return armada.InterfacesDeleteFuture{}, nil
 }
 
 // WaitForNetworkInterfacesDeleteFuture waits for the DeleteNetworkInterface operation to complete.
-func (s *Service) WaitForNetworkInterfacesDeleteFuture(future network.InterfacesDeleteFuture) error {
+func (s *Service) WaitForNetworkInterfacesDeleteFuture(future armada.InterfacesDeleteFuture) error {
 	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Interfaces.Client)
 	return nil
 }

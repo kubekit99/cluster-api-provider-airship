@@ -20,8 +20,8 @@ import (
 	"fmt"
 
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/network"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/resources"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/armada"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/deckhand"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/deployer"
 	"github.com/pkg/errors"
 	"k8s.io/klog"
@@ -60,11 +60,11 @@ func (a *Actuator) Reconcile(cluster *clusterv1.Cluster) error {
 
 	defer scope.Close()
 
-	networkSvc := network.NewService(scope)
-	resourcesSvc := resources.NewService(scope)
+	networkSvc := armada.NewService(scope)
+	deckhandSvc := deckhand.NewService(scope)
 
 	// Reconcile resource group
-	_, err = resourcesSvc.CreateOrUpdateGroup(scope.ClusterConfig.ResourceGroup, scope.ClusterConfig.Location)
+	_, err = deckhandSvc.CreateOrUpdateGroup(scope.ClusterConfig.ResourceGroup, scope.ClusterConfig.Location)
 	if err != nil {
 		return fmt.Errorf("failed to create or update resource group: %v", err)
 	}
@@ -102,9 +102,9 @@ func (a *Actuator) Delete(cluster *clusterv1.Cluster) error {
 
 	defer scope.Close()
 
-	resourcesSvc := resources.NewService(scope)
+	deckhandSvc := deckhand.NewService(scope)
 
-	resp, err := resourcesSvc.CheckGroupExistence(scope.ClusterConfig.ResourceGroup)
+	resp, err := deckhandSvc.CheckGroupExistence(scope.ClusterConfig.ResourceGroup)
 	if err != nil {
 		return fmt.Errorf("error checking for resource group existence: %v", err)
 	}
@@ -112,11 +112,11 @@ func (a *Actuator) Delete(cluster *clusterv1.Cluster) error {
 		return fmt.Errorf("resource group %v does not exist", scope.ClusterConfig.ResourceGroup)
 	}
 
-	groupsDeleteFuture, err := resourcesSvc.DeleteGroup(scope.ClusterConfig.ResourceGroup)
+	groupsDeleteFuture, err := deckhandSvc.DeleteGroup(scope.ClusterConfig.ResourceGroup)
 	if err != nil {
 		return fmt.Errorf("error deleting resource group: %v", err)
 	}
-	err = resourcesSvc.WaitForGroupsDeleteFuture(groupsDeleteFuture)
+	err = deckhandSvc.WaitForGroupsDeleteFuture(groupsDeleteFuture)
 	if err != nil {
 		return fmt.Errorf("error waiting for resource group deletion: %v", err)
 	}

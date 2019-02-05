@@ -14,26 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package network
+package armada
 
 import (
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/armada"
 )
 
 // GetPublicIPAddress retrieves the Public IP address resource.
-func (s *Service) GetPublicIPAddress(resourceGroup string, IPName string) (network.PublicIPAddress, error) {
+func (s *Service) GetPublicIPAddress(resourceGroup string, IPName string) (armada.PublicIPAddress, error) {
 	//JEB return s.scope.AirshipClients.PublicIPAddresses.Get(s.scope.Context, resourceGroup, IPName, "")
-	return network.PublicIPAddress{}, nil
+	return armada.PublicIPAddress{}, nil
 }
 
 // DeletePublicIPAddress deletes the Public IP address resource.
-func (s *Service) DeletePublicIPAddress(resourceGroup string, IPName string) (network.PublicIPAddressesDeleteFuture, error) {
+func (s *Service) DeletePublicIPAddress(resourceGroup string, IPName string) (armada.PublicIPAddressesDeleteFuture, error) {
 	//JEB return s.scope.AirshipClients.PublicIPAddresses.Delete(s.scope.Context, resourceGroup, IPName)
-	return network.PublicIPAddressesDeleteFuture{}, nil
+	return armada.PublicIPAddressesDeleteFuture{}, nil
 }
 
 // WaitForPublicIPAddressDeleteFuture waits for the DeletePublicIPAddress operation to complete.
-func (s *Service) WaitForPublicIPAddressDeleteFuture(future network.PublicIPAddressesDeleteFuture) error {
+func (s *Service) WaitForPublicIPAddressDeleteFuture(future armada.PublicIPAddressesDeleteFuture) error {
 	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.PublicIPAddresses.Client)
 	return nil
 }

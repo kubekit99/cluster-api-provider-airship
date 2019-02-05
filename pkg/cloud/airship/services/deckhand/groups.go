@@ -14,12 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package resources
+package deckhand
 
 import (
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/resources"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/deckhand"
 )
 
 // CreateOrUpdateGroup creates or updates an airship resource group.

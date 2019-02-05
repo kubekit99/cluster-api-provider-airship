@@ -28,9 +28,9 @@ import (
 
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/armada"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/deckhand"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/drydock"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/network"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/resources"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/deployer"
 	"github.com/pkg/errors"
 	// "github.com/pkg/sftp"
@@ -79,23 +79,23 @@ func (a *Actuator) Create(ctx context.Context, cluster *clusterv1.Cluster, machi
 
 	defer scope.Close()
 
-	resourcesSvc := resources.NewService(scope.Scope)
+	deckhandSvc := deckhand.NewService(scope.Scope)
 
-	err = resourcesSvc.ValidateDeployment(machine, scope.ClusterConfig, scope.MachineConfig)
+	err = deckhandSvc.ValidateDeployment(machine, scope.ClusterConfig, scope.MachineConfig)
 	if err != nil {
 		return fmt.Errorf("error validating deployment: %v", err)
 	}
 
-	deploymentsFuture, err := resourcesSvc.CreateOrUpdateDeployment(machine, scope.ClusterConfig, scope.MachineConfig)
+	deploymentsFuture, err := deckhandSvc.CreateOrUpdateDeployment(machine, scope.ClusterConfig, scope.MachineConfig)
 	if err != nil {
 		return fmt.Errorf("error creating or updating deployment: %v", err)
 	}
-	err = resourcesSvc.WaitForDeploymentsCreateOrUpdateFuture(*deploymentsFuture)
+	err = deckhandSvc.WaitForDeploymentsCreateOrUpdateFuture(*deploymentsFuture)
 	if err != nil {
 		return fmt.Errorf("error waiting for deployment creation or update: %v", err)
 	}
 
-	deployment, err := resourcesSvc.GetDeploymentResult(*deploymentsFuture)
+	deployment, err := deckhandSvc.GetDeploymentResult(*deploymentsFuture)
 	// Work around possible bugs or late-stage failures
 	if deployment.Name == "" || err != nil {
 		return fmt.Errorf("error getting deployment result: %v", err)
@@ -129,7 +129,7 @@ func (a *Actuator) Update(ctx context.Context, cluster *clusterv1.Cluster, goalM
 	currentMachine := scope.Machine
 
 	if currentMachine == nil {
-		vm, err := drydockSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, resources.GetVMName(goalMachine))
+		vm, err := drydockSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, deckhand.GetVMName(goalMachine))
 		if err != nil || vm == nil {
 			return fmt.Errorf("error checking if vm exists: %v", err)
 		}
@@ -196,7 +196,7 @@ func (a *Actuator) updateMaster(cluster *clusterv1.Cluster, currentMachine *clus
 		cmd += fmt.Sprintf("curl -sSL https://dl.k8s.io/release/v%s/bin/linux/amd64/kubectl | "+
 			"sudo tee /usr/bin/kubectl > /dev/null;"+
 			"sudo chmod a+rx /usr/bin/kubectl;", goalMachine.Spec.Versions.ControlPlane)
-		commandRunFuture, err := drydockSvc.RunCommand(scope.ClusterConfig.ResourceGroup, resources.GetVMName(goalMachine), cmd)
+		commandRunFuture, err := drydockSvc.RunCommand(scope.ClusterConfig.ResourceGroup, deckhand.GetVMName(goalMachine), cmd)
 		if err != nil {
 			return fmt.Errorf("error running command on vm: %v", err)
 		}
@@ -208,14 +208,14 @@ func (a *Actuator) updateMaster(cluster *clusterv1.Cluster, currentMachine *clus
 
 	// update master and node packages
 	if currentMachine.Spec.Versions.Kubelet != goalMachine.Spec.Versions.Kubelet {
-		nodeName := strings.ToLower(resources.GetVMName(goalMachine))
+		nodeName := strings.ToLower(deckhand.GetVMName(goalMachine))
 		// prepare node for maintenance
 		cmd := fmt.Sprintf("sudo kubectl drain %s --kubeconfig /etc/kubernetes/admin.conf --ignore-daemonsets;"+
 			"sudo apt-get install kubelet=%s;", nodeName, goalMachine.Spec.Versions.Kubelet+"-00")
 		// mark the node as schedulable
 		cmd += fmt.Sprintf("sudo kubectl uncordon %s --kubeconfig /etc/kubernetes/admin.conf;", nodeName)
 
-		commandRunFuture, err := drydockSvc.RunCommand(scope.ClusterConfig.ResourceGroup, resources.GetVMName(goalMachine), cmd)
+		commandRunFuture, err := drydockSvc.RunCommand(scope.ClusterConfig.ResourceGroup, deckhand.GetVMName(goalMachine), cmd)
 		if err != nil {
 			return fmt.Errorf("error running command on vm: %v", err)
 		}
@@ -247,10 +247,10 @@ func (a *Actuator) Delete(ctx context.Context, cluster *clusterv1.Cluster, machi
 	defer scope.Close()
 
 	drydockSvc := drydock.NewService(scope.Scope)
-	networkSvc := network.NewService(scope.Scope)
+	armadaSvc := armada.NewService(scope.Scope)
 
 	// Check if VM exists
-	vm, err := drydockSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, resources.GetVMName(machine))
+	vm, err := drydockSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, deckhand.GetVMName(machine))
 	if err != nil {
 		return fmt.Errorf("error checking if vm exists: %v", err)
 	}
@@ -258,12 +258,12 @@ func (a *Actuator) Delete(ctx context.Context, cluster *clusterv1.Cluster, machi
 		return fmt.Errorf("couldn't find vm for machine: %v", machine.Name)
 	}
 
-	_ = networkSvc
+	_ = armadaSvc
 	//JEB osDiskName := vm.VirtualMachineProperties.StorageProfile.OsDisk.Name
 	//JEB nicID := (*vm.VirtualMachineProperties.NetworkProfile.NetworkInterfaces)[0].ID
 
 	// delete the VM instance
-	//JEB vmDeleteFuture, err := drydockSvc.DeleteVM(scope.ClusterConfig.ResourceGroup, resources.GetVMName(machine))
+	//JEB vmDeleteFuture, err := drydockSvc.DeleteVM(scope.ClusterConfig.ResourceGroup, deckhand.GetVMName(machine))
 	//JEB if err != nil {
 	//JEB 		return fmt.Errorf("error deleting virtual machine: %v", err)
 	//JEB }
@@ -283,25 +283,25 @@ func (a *Actuator) Delete(ctx context.Context, cluster *clusterv1.Cluster, machi
 	//JEB }
 
 	// delete NIC associated with the VM
-	//JEB nicName, err := resources.ResourceName(*nicID)
+	//JEB nicName, err := deckhand.ResourceName(*nicID)
 	//JEB if err != nil {
 	//JEB 		return fmt.Errorf("error retrieving network interface name: %v", err)
 	//JEB }
-	//JEB interfacesDeleteFuture, err := networkSvc.DeleteNetworkInterface(scope.ClusterConfig.ResourceGroup, nicName)
+	//JEB interfacesDeleteFuture, err := armadaSvc.DeleteNetworkInterface(scope.ClusterConfig.ResourceGroup, nicName)
 	//JEB if err != nil {
 	//JEB 		return fmt.Errorf("error deleting network interface: %v", err)
 	//JEB }
-	//JEB err = networkSvc.WaitForNetworkInterfacesDeleteFuture(interfacesDeleteFuture)
+	//JEB err = armadaSvc.WaitForNetworkInterfacesDeleteFuture(interfacesDeleteFuture)
 	//JEB if err != nil {
 	//JEB 		return fmt.Errorf("error waiting for network interface deletion: %v", err)
 	//JEB 	}
 
 	// delete public ip address associated with the VM
-	//JEB publicIPAddressDeleteFuture, err := networkSvc.DeletePublicIPAddress(scope.ClusterConfig.ResourceGroup, resources.GetPublicIPName(machine))
+	//JEB publicIPAddressDeleteFuture, err := armadaSvc.DeletePublicIPAddress(scope.ClusterConfig.ResourceGroup, deckhand.GetPublicIPName(machine))
 	//JEB if err != nil {
 	//JEB 		return fmt.Errorf("error deleting public IP address: %v", err)
 	//JEB }
-	//JEB err = networkSvc.WaitForPublicIPAddressDeleteFuture(publicIPAddressDeleteFuture)
+	//JEB err = armadaSvc.WaitForPublicIPAddressDeleteFuture(publicIPAddressDeleteFuture)
 	//JEB if err != nil {
 	//JEB 		return fmt.Errorf("error waiting for public ip address deletion: %v", err)
 	//JEB }
@@ -320,8 +320,8 @@ func (a *Actuator) GetKubeConfig(cluster *clusterv1.Cluster, machine *clusterv1.
 
 	defer scope.Close()
 
-	networkSvc := network.NewService(scope.Scope)
-	_ = networkSvc
+	armadaSvc := armada.NewService(scope.Scope)
+	_ = armadaSvc
 
 	// JEB: Seems to be collected the ./.kube/config from remote machine.
 	// decoded, err := base64.StdEncoding.DecodeString(scope.MachineConfig.SSHPrivateKey)
@@ -330,7 +330,7 @@ func (a *Actuator) GetKubeConfig(cluster *clusterv1.Cluster, machine *clusterv1.
 	// 	return "", err
 	// }
 
-	// ip, err := networkSvc.GetPublicIPAddress(scope.ClusterConfig.ResourceGroup, resources.GetPublicIPName(machine))
+	// ip, err := armadaSvc.GetPublicIPAddress(scope.ClusterConfig.ResourceGroup, deckhand.GetPublicIPName(machine))
 	// if err != nil {
 	// 	return "", fmt.Errorf("error getting public ip address: %v ", err)
 	// }
@@ -397,16 +397,16 @@ func (a *Actuator) Exists(ctx context.Context, cluster *clusterv1.Cluster, machi
 	defer scope.Close()
 
 	drydockSvc := drydock.NewService(scope.Scope)
-	resourcesSvc := resources.NewService(scope.Scope)
+	deckhandSvc := deckhand.NewService(scope.Scope)
 
-	resp, err := resourcesSvc.CheckGroupExistence(scope.ClusterConfig.ResourceGroup)
+	resp, err := deckhandSvc.CheckGroupExistence(scope.ClusterConfig.ResourceGroup)
 	if err != nil {
 		return false, err
 	}
 	if resp.StatusCode == 404 {
 		return false, nil
 	}
-	vm, err := drydockSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, resources.GetVMName(machine))
+	vm, err := drydockSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, deckhand.GetVMName(machine))
 	if err != nil {
 		return false, err
 	}

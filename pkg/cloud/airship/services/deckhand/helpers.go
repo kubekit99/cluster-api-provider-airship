@@ -1,5 +1,5 @@
 /*
-Copyright 2018 The Kubernetes Authors.
+Copyright 2019 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,22 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package resources
+package deckhand
 
 import (
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators"
+	"fmt"
+	"strings"
 )
 
-// Service holds a collection of interfaces.
-// The interfaces are broken down like this to group functions together.
-// One alternative is to have a large list of functions from the ec2 client.
-type Service struct {
-	scope *actuators.Scope
-}
-
-// NewService returns a new service given the api clients.
-func NewService(scope *actuators.Scope) *Service {
-	return &Service{
-		scope: scope,
+// ResourceName extracts the name of the resource from its ID.
+func ResourceName(id string) (string, error) {
+	parts := strings.Split(id, "/")
+	name := parts[len(parts)-1]
+	if len(name) == 0 {
+		return "", fmt.Errorf("identifier did not contain resource name")
 	}
+	return name, nil
 }

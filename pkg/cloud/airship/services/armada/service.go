@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package network
+package armada
 
 import (
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators"
