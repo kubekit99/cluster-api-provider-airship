@@ -17,7 +17,7 @@ limitations under the License.
 package controller
 
 import (
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators/cluster"
+	airshipcluster "github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators/cluster"
 	capicluster "sigs.k8s.io/cluster-api/pkg/controller/cluster"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
@@ -26,10 +26,11 @@ import (
 func init() {
 	// AddToManagerFuncs is a list of functions to create controllers and add them to a manager.
 	AddToManagerFuncs = append(AddToManagerFuncs, func(m manager.Manager) error {
-		actuator, err := cluster.NewActuator(cluster.ActuatorParams{})
+		params := airshipcluster.ActuatorParams{}
+		clusterActuator, err := airshipcluster.NewActuator(params)
 		if err != nil {
 			return err
 		}
-		return capicluster.AddWithActuator(m, actuator)
+		return capicluster.AddWithActuator(m, clusterActuator)
 	})
 }

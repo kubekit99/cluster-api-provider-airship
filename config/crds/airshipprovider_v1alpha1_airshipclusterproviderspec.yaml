@@ -4,26 +4,35 @@ metadata:
   creationTimestamp: null
   labels:
     controller-tools.k8s.io: "1.0"
-  name: airshipmachineproviderstatuses.airship.kubekit.cloud
+  name: airshipclusterproviderspecs.airshipprovider.kubekit.cloud
 spec:
-  group: airship.kubekit.cloud
+  group: airshipprovider.kubekit.cloud
   names:
-    kind: AirshipMachineProviderStatus
-    plural: airshipmachineproviderstatuses
+    kind: AirshipClusterProviderSpec
+    plural: airshipclusterproviderspecs
   scope: Namespaced
   validation:
     openAPIV3Schema:
       properties:
         apiVersion:
           type: string
+        caCertificate:
+          format: byte
+          type: string
+        caKey:
+          format: byte
+          type: string
         kind:
+          type: string
+        location:
           type: string
         metadata:
           type: object
-        spec:
-          type: object
-        status:
-          type: object
+        resourceGroup:
+          type: string
+      required:
+      - resourceGroup
+      - location
   version: v1alpha1
 status:
   acceptedNames:

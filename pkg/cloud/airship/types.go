@@ -1,5 +1,5 @@
 /*
-Copyright 2019 The Kubernetes Authors.
+Copyright 2018 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,10 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Package v1alpha1 contains API Schema definitions for the airship v1alpha1 API group
-// +k8s:openapi-gen=true
-// +k8s:deepcopy-gen=package,register
-// +k8s:conversion-gen=github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airship
-// +k8s:defaulter-gen=TypeMeta
-// +groupName=airship.kubekit.cloud
-package v1alpha1
+package airship
+
+import (
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/record"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+// ActuatorParams holds parameter information for Actuator
+type ActuatorParams struct {
+	KubeClient    kubernetes.Interface
+	Client        client.Client
+	EventRecorder record.EventRecorder
+	Scheme        *runtime.Scheme
+}
