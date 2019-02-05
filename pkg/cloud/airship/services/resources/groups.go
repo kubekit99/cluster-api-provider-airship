@@ -18,26 +18,31 @@ package resources
 
 import (
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
+	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/resources"
 )
 
 // CreateOrUpdateGroup creates or updates an airship resource group.
 func (s *Service) CreateOrUpdateGroup(resourceGroupName string, location string) (resources.Group, error) {
-	return s.scope.AirshipClients.Groups.CreateOrUpdate(s.scope.Context, resourceGroupName, resources.Group{Location: to.StringPtr(location)})
+	//JEB return s.scope.AirshipClients.Groups.CreateOrUpdate(s.scope.Context, resourceGroupName, resources.Group{Location: to.StringPtr(location)})
+	return resources.Group{}, nil
+
 }
 
 // DeleteGroup deletes an airship resource group.
 func (s *Service) DeleteGroup(resourceGroupName string) (resources.GroupsDeleteFuture, error) {
-	return s.scope.AirshipClients.Groups.Delete(s.scope.Context, resourceGroupName)
+	//JEB return s.scope.AirshipClients.Groups.Delete(s.scope.Context, resourceGroupName)
+	return resources.GroupsDeleteFuture{}, nil
 }
 
 // CheckGroupExistence checks oif the resource group exists or not.
 func (s *Service) CheckGroupExistence(resourceGroupName string) (autorest.Response, error) {
-	return s.scope.AirshipClients.Groups.CheckExistence(s.scope.Context, resourceGroupName)
+	//JEB return s.scope.AirshipClients.Groups.CheckExistence(s.scope.Context, resourceGroupName)
+	return autorest.Response{}, nil
 }
 
 // WaitForGroupsDeleteFuture returns when the DeleteGroup operation completes.
 func (s *Service) WaitForGroupsDeleteFuture(future resources.GroupsDeleteFuture) error {
-	return future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Groups.Client)
+	//JEB return future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Groups.Client)
+	return nil
 }

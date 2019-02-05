@@ -17,7 +17,7 @@ limitations under the License.
 package network
 
 import (
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
+	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
 )
 
@@ -31,36 +31,38 @@ const (
 
 // CreateOrUpdateVnet creates or updates a virtual network resource.
 func (s *Service) CreateOrUpdateVnet(resourceGroupName string, virtualNetworkName string, location string) (*network.VirtualNetworksCreateOrUpdateFuture, error) {
-	if virtualNetworkName == "" {
-		virtualNetworkName = VnetDefaultName
-	}
-
-	subnets := []network.Subnet{
-		{
-			Name: to.StringPtr(SubnetDefaultName),
-			SubnetPropertiesFormat: &network.SubnetPropertiesFormat{
-				AddressPrefix: to.StringPtr(defaultPrivateSubnetCIDR),
-			},
-		},
-	}
-	virtualNetworkProperties := network.VirtualNetworkPropertiesFormat{
-		AddressSpace: &network.AddressSpace{
-			AddressPrefixes: &[]string{defaultPrivateSubnetCIDR},
-		},
-		Subnets: &subnets,
-	}
-	virtualNetwork := network.VirtualNetwork{
-		Location:                       to.StringPtr(location),
-		VirtualNetworkPropertiesFormat: &virtualNetworkProperties,
-	}
-	sgFuture, err := s.scope.AirshipClients.VirtualNetworks.CreateOrUpdate(s.scope.Context, resourceGroupName, virtualNetworkName, virtualNetwork)
-	if err != nil {
-		return nil, err
-	}
-	return &sgFuture, nil
+	//JEB	if virtualNetworkName == "" {
+	//JEB		virtualNetworkName = VnetDefaultName
+	//JEB	}
+	//JEB
+	//JEB	subnets := []network.Subnet{
+	//JEB		{
+	//JEB			Name: to.StringPtr(SubnetDefaultName),
+	//JEB			SubnetPropertiesFormat: &network.SubnetPropertiesFormat{
+	//JEB				AddressPrefix: to.StringPtr(defaultPrivateSubnetCIDR),
+	//JEB			},
+	//JEB		},
+	//JEB	}
+	//JEB	virtualNetworkProperties := network.VirtualNetworkPropertiesFormat{
+	//JEB		AddressSpace: &network.AddressSpace{
+	//JEB			AddressPrefixes: &[]string{defaultPrivateSubnetCIDR},
+	//JEB		},
+	//JEB		Subnets: &subnets,
+	//JEB	}
+	//JEB	virtualNetwork := network.VirtualNetwork{
+	//JEB		Location:                       to.StringPtr(location),
+	//JEB		VirtualNetworkPropertiesFormat: &virtualNetworkProperties,
+	//JEB	}
+	//JEB	sgFuture, err := s.scope.AirshipClients.VirtualNetworks.CreateOrUpdate(s.scope.Context, resourceGroupName, virtualNetworkName, virtualNetwork)
+	//JEB	if err != nil {
+	//JEB		return nil, err
+	//JEB	}
+	//JEB	return &sgFuture, nil
+	return nil, nil
 }
 
 // WaitForVnetCreateOrUpdateFuture returns when the CreateOrUpdateVnet operation completes.
 func (s *Service) WaitForVnetCreateOrUpdateFuture(future network.VirtualNetworksCreateOrUpdateFuture) error {
-	return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.VirtualNetworks.Client)
+	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.VirtualNetworks.Client)
+	return nil
 }

@@ -15,3 +15,12 @@ limitations under the License.
 */
 
 package resources
+
+type Group struct{}
+type GroupsDeleteFuture struct{}
+type DeploymentsCreateOrUpdateFuture struct{}
+type Deployment struct{}
+type DeploymentExtended struct{}
+type GroupsClient struct{}
+type DeploymentsClient struct{}
+type TagsClient struct{}

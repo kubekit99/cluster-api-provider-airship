@@ -15,3 +15,13 @@ limitations under the License.
 */
 
 package compute
+
+type VirtualMachine struct{}
+type VirtualMachinesRunCommandFuture struct{}
+type VirtualMachinesDeleteFuture struct{}
+type DisksDeleteFuture struct{}
+type VirtualMachinesClient struct{}
+type DisksClient struct{}
+
+// NewVirtualMachinesClient
+// NewDisksClient

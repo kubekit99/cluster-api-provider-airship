@@ -10,7 +10,7 @@ test: generate fmt vet manifests
 
 # Build manager binary
 manager: generate fmt vet
-	go build -o bin/manager github.com/kubekit99/cluster-api-provider-airship/cmd/manager
+	go build -gcflags="-e" -o bin/manager github.com/kubekit99/cluster-api-provider-airship/cmd/manager
 
 # Build clusterctl binary
 clusterctl: generate fmt vet

@@ -20,10 +20,12 @@ import "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/ser
 
 // DeleteNetworkInterface deletes the NIC resource.
 func (s *Service) DeleteNetworkInterface(resourceGroup string, networkInterfaceName string) (network.InterfacesDeleteFuture, error) {
-	return s.scope.AirshipClients.Interfaces.Delete(s.scope.Context, resourceGroup, networkInterfaceName)
+	//JEB return s.scope.AirshipClients.Interfaces.Delete(s.scope.Context, resourceGroup, networkInterfaceName)
+	return network.InterfacesDeleteFuture{}, nil
 }
 
 // WaitForNetworkInterfacesDeleteFuture waits for the DeleteNetworkInterface operation to complete.
 func (s *Service) WaitForNetworkInterfacesDeleteFuture(future network.InterfacesDeleteFuture) error {
-	return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Interfaces.Client)
+	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Interfaces.Client)
+	return nil
 }

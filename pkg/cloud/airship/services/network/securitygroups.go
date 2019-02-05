@@ -17,8 +17,8 @@ limitations under the License.
 package network
 
 import (
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
+	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
+	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
 )
 
@@ -29,71 +29,75 @@ const (
 
 // NetworkSGIfExists returns the nsg reference if the nsg resource exists.
 func (s *Service) NetworkSGIfExists(resourceGroupName string, networkSecurityGroupName string) (*network.SecurityGroup, error) {
-	networkSG, err := s.scope.AirshipClients.SecurityGroups.Get(s.scope.Context, resourceGroupName, networkSecurityGroupName, "")
-	if err != nil {
-		if aerr, ok := err.(autorest.DetailedError); ok {
-			if aerr.StatusCode.(int) == 404 {
-				return nil, nil
-			}
-		}
-		return nil, err
-	}
-	return &networkSG, nil
+	//JEB networkSG, err := s.scope.AirshipClients.SecurityGroups.Get(s.scope.Context, resourceGroupName, networkSecurityGroupName, "")
+	//JEB if err != nil {
+	//JEB 		if aerr, ok := err.(autorest.DetailedError); ok {
+	//JEB 			if aerr.StatusCode.(int) == 404 {
+	//JEB 				return nil, nil
+	//JEB 			}
+	//JEB 		}
+	//JEB 		return nil, err
+	//JEB 	}
+	//JEB 	return &networkSG, nil
+	return nil, nil
 }
 
 // CreateOrUpdateNetworkSecurityGroup creates or updates the nsg resource.
 func (s *Service) CreateOrUpdateNetworkSecurityGroup(resourceGroupName string, networkSecurityGroupName string, location string) (*network.SecurityGroupsCreateOrUpdateFuture, error) {
-	if networkSecurityGroupName == "" {
-		networkSecurityGroupName = SecurityGroupDefaultName
-	}
-	sshInbound := network.SecurityRule{
-		Name: to.StringPtr("ClusterAPISSH"),
-		SecurityRulePropertiesFormat: &network.SecurityRulePropertiesFormat{
-			Protocol:                 network.SecurityRuleProtocolTCP,
-			SourcePortRange:          to.StringPtr("*"),
-			DestinationPortRange:     to.StringPtr("22"),
-			SourceAddressPrefix:      to.StringPtr("*"),
-			DestinationAddressPrefix: to.StringPtr("*"),
-			Priority:                 to.Int32Ptr(1000),
-			Direction:                network.SecurityRuleDirectionInbound,
-			Access:                   network.SecurityRuleAccessAllow,
-		},
-	}
-
-	kubernetesInbound := network.SecurityRule{
-		Name: to.StringPtr("KubernetesAPI"),
-		SecurityRulePropertiesFormat: &network.SecurityRulePropertiesFormat{
-			Protocol:                 network.SecurityRuleProtocolTCP,
-			SourcePortRange:          to.StringPtr("*"),
-			DestinationPortRange:     to.StringPtr("6443"),
-			SourceAddressPrefix:      to.StringPtr("*"),
-			DestinationAddressPrefix: to.StringPtr("*"),
-			Priority:                 to.Int32Ptr(1001),
-			Direction:                network.SecurityRuleDirectionInbound,
-			Access:                   network.SecurityRuleAccessAllow,
-		},
-	}
-
-	securityGroupProperties := network.SecurityGroupPropertiesFormat{
-		SecurityRules: &[]network.SecurityRule{sshInbound, kubernetesInbound},
-	}
-	securityGroup := network.SecurityGroup{
-		Location:                      to.StringPtr(location),
-		SecurityGroupPropertiesFormat: &securityGroupProperties,
-	}
-	sgFuture, err := s.scope.AirshipClients.SecurityGroups.CreateOrUpdate(s.scope.Context, resourceGroupName, networkSecurityGroupName, securityGroup)
-	if err != nil {
-		return nil, err
-	}
-	return &sgFuture, nil
+	//JEB if networkSecurityGroupName == "" {
+	//JEB networkSecurityGroupName = SecurityGroupDefaultName
+	//JEB }
+	//JEB sshInbound := network.SecurityRule{
+	//JEB Name: to.StringPtr("ClusterAPISSH"),
+	//JEB SecurityRulePropertiesFormat: &network.SecurityRulePropertiesFormat{
+	//JEB Protocol:                 network.SecurityRuleProtocolTCP,
+	//JEB SourcePortRange:          to.StringPtr("*"),
+	//JEB DestinationPortRange:     to.StringPtr("22"),
+	//JEB SourceAddressPrefix:      to.StringPtr("*"),
+	//JEB DestinationAddressPrefix: to.StringPtr("*"),
+	//JEB Priority:                 to.Int32Ptr(1000),
+	//JEB Direction:                network.SecurityRuleDirectionInbound,
+	//JEB Access:                   network.SecurityRuleAccessAllow,
+	//JEB },
+	//JEB }
+	//JEB
+	//JEB kubernetesInbound := network.SecurityRule{
+	//JEB Name: to.StringPtr("KubernetesAPI"),
+	//JEB SecurityRulePropertiesFormat: &network.SecurityRulePropertiesFormat{
+	//JEB Protocol:                 network.SecurityRuleProtocolTCP,
+	//JEB SourcePortRange:          to.StringPtr("*"),
+	//JEB DestinationPortRange:     to.StringPtr("6443"),
+	//JEB SourceAddressPrefix:      to.StringPtr("*"),
+	//JEB DestinationAddressPrefix: to.StringPtr("*"),
+	//JEB Priority:                 to.Int32Ptr(1001),
+	//JEB Direction:                network.SecurityRuleDirectionInbound,
+	//JEB Access:                   network.SecurityRuleAccessAllow,
+	//JEB },
+	//JEB }
+	//JEB
+	//JEB securityGroupProperties := network.SecurityGroupPropertiesFormat{
+	//JEB SecurityRules: &[]network.SecurityRule{sshInbound, kubernetesInbound},
+	//JEB }
+	//JEB securityGroup := network.SecurityGroup{
+	//JEB Location:                      to.StringPtr(location),
+	//JEB SecurityGroupPropertiesFormat: &securityGroupProperties,
+	//JEB }
+	//JEB sgFuture, err := s.scope.AirshipClients.SecurityGroups.CreateOrUpdate(s.scope.Context, resourceGroupName, networkSecurityGroupName, securityGroup)
+	//JEB if err != nil {
+	//JEB return nil, err
+	//JEB }
+	//JEB return &sgFuture, nil
+	return nil, nil
 }
 
 // DeleteNetworkSecurityGroup deletes the nsg resource.
 func (s *Service) DeleteNetworkSecurityGroup(resourceGroupName string, networkSecurityGroupName string) (network.SecurityGroupsDeleteFuture, error) {
-	return s.scope.AirshipClients.SecurityGroups.Delete(s.scope.Context, resourceGroupName, networkSecurityGroupName)
+	//JEB return s.scope.AirshipClients.SecurityGroups.Delete(s.scope.Context, resourceGroupName, networkSecurityGroupName)
+	return network.SecurityGroupsDeleteFuture{}, nil
 }
 
 // WaitForNetworkSGsCreateOrUpdateFuture returns when the CreateOrUpdateNetworkSecurityGroup operation completes.
 func (s *Service) WaitForNetworkSGsCreateOrUpdateFuture(future network.SecurityGroupsCreateOrUpdateFuture) error {
-	return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.SecurityGroups.Client)
+	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.SecurityGroups.Client)
+	return nil
 }

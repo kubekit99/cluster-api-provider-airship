@@ -64,7 +64,9 @@ func (d *Deployer) GetIP(cluster *clusterv1.Cluster, machine *clusterv1.Machine)
 	if err != nil {
 		return "", err
 	}
-	return *pip.IPAddress, nil
+	//JEB return *pip.IPAddress, nil
+	_ = pip
+	return "", nil
 }
 
 /*

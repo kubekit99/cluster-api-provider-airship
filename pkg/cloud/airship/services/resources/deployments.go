@@ -36,62 +36,66 @@ const (
 // CreateOrUpdateDeployment is used to create or update a kubernetes cluster. It does so by creating or updating an ARM deployment.
 func (s *Service) CreateOrUpdateDeployment(machine *clusterv1.Machine, clusterConfig *providerv1.AirshipClusterProviderSpec, machineConfig *providerv1.AirshipMachineProviderSpec) (*resources.DeploymentsCreateOrUpdateFuture, error) {
 	// Parse the ARM template
-	template, err := readJSON(templateFile)
-	if err != nil {
-		return nil, err
-	}
-	params, err := convertMachineToDeploymentParams(machine, machineConfig)
-	if err != nil {
-		return nil, err
-	}
-	deployment := resources.Deployment{
-		Properties: &resources.DeploymentProperties{
-			Template:   template,
-			Parameters: params,
-			Mode:       resources.Incremental,
-		},
-	}
-
-	deploymentFuture, err := s.scope.AirshipClients.Deployments.CreateOrUpdate(s.scope.Context, clusterConfig.ResourceGroup, machine.ObjectMeta.Name, deployment)
-	if err != nil {
-		return nil, err
-	}
-	return &deploymentFuture, nil
+	//JEB template, err := readJSON(templateFile)
+	//JEB if err != nil {
+	//JEB return nil, err
+	//JEB }
+	//JEB params, err := convertMachineToDeploymentParams(machine, machineConfig)
+	//JEB if err != nil {
+	//JEB return nil, err
+	//JEB }
+	//JEB deployment := resources.Deployment{
+	//JEB Properties: &resources.DeploymentProperties{
+	//JEB Template:   template,
+	//JEB Parameters: params,
+	//JEB Mode:       resources.Incremental,
+	//JEB },
+	//JEB }
+	//JEB
+	//JEB deploymentFuture, err := s.scope.AirshipClients.Deployments.CreateOrUpdate(s.scope.Context, clusterConfig.ResourceGroup, machine.ObjectMeta.Name, deployment)
+	//JEB if err != nil {
+	//JEB return nil, err
+	//JEB }
+	//JEB return &deploymentFuture, nil
+	return nil, nil
 }
 
 // ValidateDeployment validates the parameters of the cluster by calling the ARM validate method.
 func (s *Service) ValidateDeployment(machine *clusterv1.Machine, clusterConfig *providerv1.AirshipClusterProviderSpec, machineConfig *providerv1.AirshipMachineProviderSpec) error {
 	// Parse the ARM template
-	template, err := readJSON(templateFile)
-	if err != nil {
-		return err
-	}
-	params, err := convertMachineToDeploymentParams(machine, machineConfig)
-	if err != nil {
-		return err
-	}
-	deployment := resources.Deployment{
-		Properties: &resources.DeploymentProperties{
-			Template:   template,
-			Parameters: params,
-			Mode:       resources.Incremental, // Do not delete and re-create matching resources that already exist
-		},
-	}
-	res, err := s.scope.AirshipClients.Deployments.Validate(s.scope.Context, clusterConfig.ResourceGroup, machine.ObjectMeta.Name, deployment)
-	if res.Error != nil {
-		return errors.New(*res.Error.Message)
-	}
-	return err
+	//JEB template, err := readJSON(templateFile)
+	//JEB if err != nil {
+	//JEB return err
+	//JEB }
+	//JEB params, err := convertMachineToDeploymentParams(machine, machineConfig)
+	//JEB if err != nil {
+	//JEB return err
+	//JEB }
+	//JEB deployment := resources.Deployment{
+	//JEB Properties: &resources.DeploymentProperties{
+	//JEB Template:   template,
+	//JEB Parameters: params,
+	//JEB Mode:       resources.Incremental, // Do not delete and re-create matching resources that already exist
+	//JEB },
+	//JEB }
+	//JEB res, err := s.scope.AirshipClients.Deployments.Validate(s.scope.Context, clusterConfig.ResourceGroup, machine.ObjectMeta.Name, deployment)
+	//JEB if res.Error != nil {
+	//JEB return errors.New(*res.Error.Message)
+	//JEB }
+	//JEB return err
+	return nil
 }
 
 // GetDeploymentResult retrieves the result of the ARM deployment operation.
 func (s *Service) GetDeploymentResult(future resources.DeploymentsCreateOrUpdateFuture) (de resources.DeploymentExtended, err error) {
-	return future.Result(s.scope.AirshipClients.Deployments)
+	//JEB return future.Result(s.scope.AirshipClients.Deployments)
+	return resources.DeploymentExtended{}, nil
 }
 
 // WaitForDeploymentsCreateOrUpdateFuture returns when the ARM operation completes.
 func (s *Service) WaitForDeploymentsCreateOrUpdateFuture(future resources.DeploymentsCreateOrUpdateFuture) error {
-	return future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Deployments.Client)
+	//JEB return future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Deployments.Client)
+	return nil
 }
 
 func convertMachineToDeploymentParams(machine *clusterv1.Machine, machineConfig *providerv1.AirshipMachineProviderSpec) (*map[string]interface{}, error) {

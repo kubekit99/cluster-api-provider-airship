@@ -1,5 +1,5 @@
 /*
-Copyright 2019 The Kubernetes Authors.
+Copyright 2018 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,31 +16,157 @@ limitations under the License.
 
 // NOTE: Boilerplate only.  Ignore this file.
 
-// Package v1alpha1 contains API Schema definitions for the airship v1alpha1 API group
+// Package v1alpha1 contains API Schema definitions for the airshipprovider v1alpha1 API group
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 // +k8s:conversion-gen=github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider
 // +k8s:defaulter-gen=TypeMeta
-// +groupName=airship.kubekit.cloud
+// +groupName=airshipprovider.k8s.io
 package v1alpha1
 
 import (
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/util/json"
+	clusterv1 "sigs.k8s.io/cluster-api/pkg/apis/cluster/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/runtime/scheme"
+	"sigs.k8s.io/yaml"
 )
 
 var (
 	// SchemeGroupVersion is group version used to register these objects
-	SchemeGroupVersion = schema.GroupVersion{Group: "airship.kubekit.cloud", Version: "v1alpha1"}
+	SchemeGroupVersion = schema.GroupVersion{Group: "airshipprovider.k8s.io", Version: "v1alpha1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
-
-	// AddToScheme is required by pkg/client/...
-	AddToScheme = SchemeBuilder.AddToScheme
 )
 
-// Resource is required by pkg/client/listers/...
-func Resource(resource string) schema.GroupResource {
-	return SchemeGroupVersion.WithResource(resource).GroupResource()
+// ClusterConfigFromProviderSpec unmarshals a provider config into an Airship Cluster type
+func ClusterConfigFromProviderSpec(providerConfig clusterv1.ProviderSpec) (*AirshipClusterProviderSpec, error) {
+	var config AirshipClusterProviderSpec
+	if providerConfig.Value == nil {
+		return &config, nil
+	}
+
+	if err := yaml.Unmarshal(providerConfig.Value.Raw, &config); err != nil {
+		return nil, err
+	}
+	return &config, nil
+}
+
+// ClusterStatusFromProviderStatus unmarshals a raw extension into an Airship Cluster type
+func ClusterStatusFromProviderStatus(extension *runtime.RawExtension) (*AirshipClusterProviderStatus, error) {
+	if extension == nil {
+		return &AirshipClusterProviderStatus{}, nil
+	}
+
+	status := new(AirshipClusterProviderStatus)
+	if err := yaml.Unmarshal(extension.Raw, status); err != nil {
+		return nil, err
+	}
+
+	return status, nil
+}
+
+// MachineConfigFromProviderSpec unmarshals a provider config into an Airship machine type
+func MachineConfigFromProviderSpec(providerConfig clusterv1.ProviderSpec) (*AirshipMachineProviderSpec, error) {
+	var config AirshipMachineProviderSpec
+	if providerConfig.Value == nil {
+		return &config, nil
+	}
+
+	if err := yaml.Unmarshal(providerConfig.Value.Raw, &config); err != nil {
+		return nil, err
+	}
+	return &config, nil
+}
+
+// MachineStatusFromProviderStatus unmarshals a raw extension into an Airship machine type
+func MachineStatusFromProviderStatus(extension *runtime.RawExtension) (*AirshipMachineProviderStatus, error) {
+	if extension == nil {
+		return &AirshipMachineProviderStatus{}, nil
+	}
+
+	status := new(AirshipMachineProviderStatus)
+	if err := yaml.Unmarshal(extension.Raw, status); err != nil {
+		return nil, err
+	}
+
+	return status, nil
+}
+
+// EncodeMachineStatus marshals the machine status
+func EncodeMachineStatus(status *AirshipMachineProviderStatus) (*runtime.RawExtension, error) {
+	if status == nil {
+		return &runtime.RawExtension{}, nil
+	}
+
+	var rawBytes []byte
+	var err error
+
+	//  TODO: use apimachinery conversion https://godoc.org/k8s.io/apimachinery/pkg/runtime#Convert_runtime_Object_To_runtime_RawExtension
+	if rawBytes, err = json.Marshal(status); err != nil {
+		return nil, err
+	}
+
+	return &runtime.RawExtension{
+		Raw: rawBytes,
+	}, nil
+}
+
+// EncodeMachineSpec marshals the machine provider spec.
+func EncodeMachineSpec(spec *AirshipMachineProviderSpec) (*runtime.RawExtension, error) {
+	if spec == nil {
+		return &runtime.RawExtension{}, nil
+	}
+
+	var rawBytes []byte
+	var err error
+
+	//  TODO: use apimachinery conversion https://godoc.org/k8s.io/apimachinery/pkg/runtime#Convert_runtime_Object_To_runtime_RawExtension
+	if rawBytes, err = json.Marshal(spec); err != nil {
+		return nil, err
+	}
+
+	return &runtime.RawExtension{
+		Raw: rawBytes,
+	}, nil
+}
+
+// EncodeClusterStatus marshals the cluster status.
+func EncodeClusterStatus(status *AirshipClusterProviderStatus) (*runtime.RawExtension, error) {
+	if status == nil {
+		return &runtime.RawExtension{}, nil
+	}
+
+	var rawBytes []byte
+	var err error
+
+	//  TODO: use apimachinery conversion https://godoc.org/k8s.io/apimachinery/pkg/runtime#Convert_runtime_Object_To_runtime_RawExtension
+	if rawBytes, err = json.Marshal(status); err != nil {
+		return nil, err
+	}
+
+	return &runtime.RawExtension{
+		Raw: rawBytes,
+	}, nil
+}
+
+// EncodeClusterSpec marshals the cluster provider spec.
+func EncodeClusterSpec(spec *AirshipClusterProviderSpec) (*runtime.RawExtension, error) {
+	if spec == nil {
+		return &runtime.RawExtension{}, nil
+	}
+
+	var rawBytes []byte
+	var err error
+
+	//  TODO: use apimachinery conversion https://godoc.org/k8s.io/apimachinery/pkg/runtime#Convert_runtime_Object_To_runtime_RawExtension
+	if rawBytes, err = json.Marshal(spec); err != nil {
+		return nil, err
+	}
+
+	return &runtime.RawExtension{
+		Raw: rawBytes,
+	}, nil
 }

@@ -22,15 +22,18 @@ import (
 
 // GetPublicIPAddress retrieves the Public IP address resource.
 func (s *Service) GetPublicIPAddress(resourceGroup string, IPName string) (network.PublicIPAddress, error) {
-	return s.scope.AirshipClients.PublicIPAddresses.Get(s.scope.Context, resourceGroup, IPName, "")
+	//JEB return s.scope.AirshipClients.PublicIPAddresses.Get(s.scope.Context, resourceGroup, IPName, "")
+	return network.PublicIPAddress{}, nil
 }
 
 // DeletePublicIPAddress deletes the Public IP address resource.
 func (s *Service) DeletePublicIPAddress(resourceGroup string, IPName string) (network.PublicIPAddressesDeleteFuture, error) {
-	return s.scope.AirshipClients.PublicIPAddresses.Delete(s.scope.Context, resourceGroup, IPName)
+	//JEB return s.scope.AirshipClients.PublicIPAddresses.Delete(s.scope.Context, resourceGroup, IPName)
+	return network.PublicIPAddressesDeleteFuture{}, nil
 }
 
 // WaitForPublicIPAddressDeleteFuture waits for the DeletePublicIPAddress operation to complete.
 func (s *Service) WaitForPublicIPAddressDeleteFuture(future network.PublicIPAddressesDeleteFuture) error {
-	return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.PublicIPAddresses.Client)
+	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.PublicIPAddresses.Client)
+	return nil
 }

@@ -21,10 +21,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/auth"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/compute"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/resources"
+	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/auth"
+	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/compute"
+	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
+	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/resources"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
 	"github.com/pkg/errors"
 	"k8s.io/klog"
@@ -56,10 +56,10 @@ func NewScope(params ScopeParams) (*Scope, error) {
 		return nil, errors.Errorf("failed to load cluster provider status: %v", err)
 	}
 
-	authorizer, err := auth.NewAuthorizerFromEnvironment()
-	if err != nil {
-		return nil, errors.Errorf("failed to create azure session: %v", err)
-	}
+	//JEB authorizer, err := auth.NewAuthorizerFromEnvironment()
+	//JEB if err != nil {
+	//JEB 		return nil, errors.Errorf("failed to create azure session: %v", err)
+	//JEB}
 
 	subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
 	if subscriptionID == "" {
@@ -67,37 +67,37 @@ func NewScope(params ScopeParams) (*Scope, error) {
 	}
 
 	// Compute
-	params.AirshipClients.VM = compute.NewVirtualMachinesClient(subscriptionID)
-	params.AirshipClients.VM.Authorizer = authorizer
+	//JEB params.AirshipClients.VM = compute.NewVirtualMachinesClient(subscriptionID)
+	//JEB params.AirshipClients.VM.Authorizer = authorizer
 
-	params.AirshipClients.Disks = compute.NewDisksClient(subscriptionID)
-	params.AirshipClients.Disks.Authorizer = authorizer
+	//JEB params.AirshipClients.Disks = compute.NewDisksClient(subscriptionID)
+	//JEB params.AirshipClients.Disks.Authorizer = authorizer
 
 	// Network
-	params.AirshipClients.VirtualNetworks = network.NewVirtualNetworksClient(subscriptionID)
-	params.AirshipClients.VirtualNetworks.Authorizer = authorizer
+	//JEB params.AirshipClients.VirtualNetworks = network.NewVirtualNetworksClient(subscriptionID)
+	//JEB params.AirshipClients.VirtualNetworks.Authorizer = authorizer
 
-	params.AirshipClients.SecurityGroups = network.NewSecurityGroupsClient(subscriptionID)
-	params.AirshipClients.SecurityGroups.Authorizer = authorizer
+	//JEB params.AirshipClients.SecurityGroups = network.NewSecurityGroupsClient(subscriptionID)
+	//JEB params.AirshipClients.SecurityGroups.Authorizer = authorizer
 
-	params.AirshipClients.Interfaces = network.NewInterfacesClient(subscriptionID)
-	params.AirshipClients.Interfaces.Authorizer = authorizer
+	//JEB params.AirshipClients.Interfaces = network.NewInterfacesClient(subscriptionID)
+	//JEB params.AirshipClients.Interfaces.Authorizer = authorizer
 
-	params.AirshipClients.LB = network.NewLoadBalancersClient(subscriptionID)
-	params.AirshipClients.LB.Authorizer = authorizer
+	//JEB params.AirshipClients.LB = network.NewLoadBalancersClient(subscriptionID)
+	//JEB params.AirshipClients.LB.Authorizer = authorizer
 
-	params.AirshipClients.PublicIPAddresses = network.NewPublicIPAddressesClient(subscriptionID)
-	params.AirshipClients.PublicIPAddresses.Authorizer = authorizer
+	//JEB params.AirshipClients.PublicIPAddresses = network.NewPublicIPAddressesClient(subscriptionID)
+	//JEB params.AirshipClients.PublicIPAddresses.Authorizer = authorizer
 
 	// Resources
-	params.AirshipClients.Groups = resources.NewGroupsClient(subscriptionID)
-	params.AirshipClients.Groups.Authorizer = authorizer
+	//JEB params.AirshipClients.Groups = resources.NewGroupsClient(subscriptionID)
+	//JEB params.AirshipClients.Groups.Authorizer = authorizer
 
-	params.AirshipClients.Deployments = resources.NewDeploymentsClient(subscriptionID)
-	params.AirshipClients.Deployments.Authorizer = authorizer
+	//JEB params.AirshipClients.Deployments = resources.NewDeploymentsClient(subscriptionID)
+	//JEB params.AirshipClients.Deployments.Authorizer = authorizer
 
-	params.AirshipClients.Tags = resources.NewTagsClient(subscriptionID)
-	params.AirshipClients.Tags.Authorizer = authorizer
+	//JEB params.AirshipClients.Tags = resources.NewTagsClient(subscriptionID)
+	//JEB params.AirshipClients.Tags.Authorizer = authorizer
 
 	var clusterClient client.ClusterInterface
 	if params.Client != nil {

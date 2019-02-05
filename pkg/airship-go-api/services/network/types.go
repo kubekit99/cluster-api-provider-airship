@@ -15,3 +15,21 @@ limitations under the License.
 */
 
 package network
+
+type InterfacesDeleteFuture struct{}
+type SecurityGroupsCreateOrUpdateFuture struct{}
+type SecurityGroup struct{}
+type PublicIPAddress struct{}
+type PublicIPAddressesDeleteFuture struct{}
+type VirtualNetworksCreateOrUpdateFuture struct{}
+type VirtualNetworksClient struct{}
+type InterfacesClient struct{}
+type LoadBalancersClient struct{}
+type PublicIPAddressesClient struct{}
+type SecurityGroupsClient struct{}
+type SecurityRule struct{}
+type SecurityGroupPropertiesFormat struct{}
+type SecurityGroupsDeleteFuture struct{}
+type Subnet struct{}
+type VirtualNetworkPropertiesFormat struct{}
+type VirtualNetwork struct{}
