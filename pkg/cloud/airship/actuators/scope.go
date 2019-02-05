@@ -18,9 +18,6 @@ package actuators
 
 import (
 	"context"
-	"fmt"
-	"os"
-
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/auth"
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/compute"
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
@@ -61,10 +58,10 @@ func NewScope(params ScopeParams) (*Scope, error) {
 	//JEB 		return nil, errors.Errorf("failed to create azure session: %v", err)
 	//JEB}
 
-	subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
-	if subscriptionID == "" {
-		return nil, fmt.Errorf("error creating azure services. Environment variable AZURE_SUBSCRIPTION_ID is not set")
-	}
+	//JEB subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	//JEB if subscriptionID == "" {
+	//JEB		return nil, fmt.Errorf("error creating azure services. Environment variable AZURE_SUBSCRIPTION_ID is not set")
+	//JEB }
 
 	// Compute
 	//JEB params.AirshipClients.VM = compute.NewVirtualMachinesClient(subscriptionID)

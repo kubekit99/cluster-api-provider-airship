@@ -69,21 +69,6 @@ func (d *Deployer) GetIP(cluster *clusterv1.Cluster, machine *clusterv1.Machine)
 	return "", nil
 }
 
-/*
-// GetIP returns the ip address of an existing machine based on the cluster and machine spec passed.
-func (a *Actuator) GetIP(cluster *clusterv1.Cluster, machine *clusterv1.Machine) (string, error) {
-	clusterConfig, err := clusterProviderFromProviderSpec(cluster.Spec.ProviderSpec)
-	if err != nil {
-		return "", fmt.Errorf("error loading cluster provider config: %v", err)
-	}
-	publicIP, err := airship.services.Network.GetPublicIPAddress(clusterConfig.ResourceGroup, resources.GetPublicIPName(machine))
-	if err != nil {
-		return "", fmt.Errorf("error getting public ip address: %v", err)
-	}
-	return *publicIP.IPAddress, nil
-}
-*/
-
 // GetKubeConfig returns the kubeconfig after the bootstrap process is complete.
 func (d *Deployer) GetKubeConfig(cluster *clusterv1.Cluster, _ *clusterv1.Machine) (string, error) {
 

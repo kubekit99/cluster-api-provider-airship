@@ -34,6 +34,7 @@ rules:
   - cluster.k8s.io
   resources:
   - clusters
+  - clusters/status
   - machines
   - machines/status
   - machinedeployments
