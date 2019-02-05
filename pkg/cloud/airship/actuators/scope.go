@@ -19,7 +19,7 @@ package actuators
 import (
 	"context"
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/auth"
-	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/compute"
+	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/drydock"
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/resources"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
@@ -63,11 +63,11 @@ func NewScope(params ScopeParams) (*Scope, error) {
 	//JEB		return nil, fmt.Errorf("error creating azure services. Environment variable AZURE_SUBSCRIPTION_ID is not set")
 	//JEB }
 
-	// Compute
-	//JEB params.AirshipClients.VM = compute.NewVirtualMachinesClient(subscriptionID)
+	// Drydock
+	//JEB params.AirshipClients.VM = drydock.NewVirtualMachinesClient(subscriptionID)
 	//JEB params.AirshipClients.VM.Authorizer = authorizer
 
-	//JEB params.AirshipClients.Disks = compute.NewDisksClient(subscriptionID)
+	//JEB params.AirshipClients.Disks = drydock.NewDisksClient(subscriptionID)
 	//JEB params.AirshipClients.Disks.Authorizer = authorizer
 
 	// Network

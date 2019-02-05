@@ -14,20 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package compute
+package drydock
 
 import (
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/compute"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/drydock"
 )
 
 // DeleteManagedDisk deletes a managed disk resource.
-func (s *Service) DeleteManagedDisk(resourceGroup string, name string) (compute.DisksDeleteFuture, error) {
+func (s *Service) DeleteManagedDisk(resourceGroup string, name string) (drydock.DisksDeleteFuture, error) {
 	//JEB return s.scope.AirshipClients.Disks.Delete(s.scope.Context, resourceGroup, name)
-	return compute.DisksDeleteFuture{}, nil
+	return drydock.DisksDeleteFuture{}, nil
 }
 
 // WaitForDisksDeleteFuture returns when the DeleteManagedDisk operation completes.
-func (s *Service) WaitForDisksDeleteFuture(future compute.DisksDeleteFuture) error {
+func (s *Service) WaitForDisksDeleteFuture(future drydock.DisksDeleteFuture) error {
 	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Disks.Client)
 	return nil
 }

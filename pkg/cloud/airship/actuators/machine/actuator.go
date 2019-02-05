@@ -28,7 +28,7 @@ import (
 
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/compute"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/drydock"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/network"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/resources"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/deployer"
@@ -116,7 +116,7 @@ func (a *Actuator) Update(ctx context.Context, cluster *clusterv1.Cluster, goalM
 
 	defer scope.Close()
 
-	computeSvc := compute.NewService(scope.Scope)
+	drydockSvc := drydock.NewService(scope.Scope)
 
 	/*
 		status, err := a.status(goalMachine)
@@ -129,7 +129,7 @@ func (a *Actuator) Update(ctx context.Context, cluster *clusterv1.Cluster, goalM
 	currentMachine := scope.Machine
 
 	if currentMachine == nil {
-		vm, err := computeSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, resources.GetVMName(goalMachine))
+		vm, err := drydockSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, resources.GetVMName(goalMachine))
 		if err != nil || vm == nil {
 			return fmt.Errorf("error checking if vm exists: %v", err)
 		}
@@ -182,7 +182,7 @@ func (a *Actuator) updateMaster(cluster *clusterv1.Cluster, currentMachine *clus
 
 	defer scope.Close()
 
-	computeSvc := compute.NewService(scope.Scope)
+	drydockSvc := drydock.NewService(scope.Scope)
 
 	// update the control plane
 	if currentMachine.Spec.Versions.ControlPlane != goalMachine.Spec.Versions.ControlPlane {
@@ -196,11 +196,11 @@ func (a *Actuator) updateMaster(cluster *clusterv1.Cluster, currentMachine *clus
 		cmd += fmt.Sprintf("curl -sSL https://dl.k8s.io/release/v%s/bin/linux/amd64/kubectl | "+
 			"sudo tee /usr/bin/kubectl > /dev/null;"+
 			"sudo chmod a+rx /usr/bin/kubectl;", goalMachine.Spec.Versions.ControlPlane)
-		commandRunFuture, err := computeSvc.RunCommand(scope.ClusterConfig.ResourceGroup, resources.GetVMName(goalMachine), cmd)
+		commandRunFuture, err := drydockSvc.RunCommand(scope.ClusterConfig.ResourceGroup, resources.GetVMName(goalMachine), cmd)
 		if err != nil {
 			return fmt.Errorf("error running command on vm: %v", err)
 		}
-		err = computeSvc.WaitForVMRunCommandFuture(commandRunFuture)
+		err = drydockSvc.WaitForVMRunCommandFuture(commandRunFuture)
 		if err != nil {
 			return fmt.Errorf("error waiting for upgrade control plane future: %v", err)
 		}
@@ -215,11 +215,11 @@ func (a *Actuator) updateMaster(cluster *clusterv1.Cluster, currentMachine *clus
 		// mark the node as schedulable
 		cmd += fmt.Sprintf("sudo kubectl uncordon %s --kubeconfig /etc/kubernetes/admin.conf;", nodeName)
 
-		commandRunFuture, err := computeSvc.RunCommand(scope.ClusterConfig.ResourceGroup, resources.GetVMName(goalMachine), cmd)
+		commandRunFuture, err := drydockSvc.RunCommand(scope.ClusterConfig.ResourceGroup, resources.GetVMName(goalMachine), cmd)
 		if err != nil {
 			return fmt.Errorf("error running command on vm: %v", err)
 		}
-		err = computeSvc.WaitForVMRunCommandFuture(commandRunFuture)
+		err = drydockSvc.WaitForVMRunCommandFuture(commandRunFuture)
 		if err != nil {
 			return fmt.Errorf("error waiting for upgrade kubelet command future: %v", err)
 		}
@@ -246,11 +246,11 @@ func (a *Actuator) Delete(ctx context.Context, cluster *clusterv1.Cluster, machi
 
 	defer scope.Close()
 
-	computeSvc := compute.NewService(scope.Scope)
+	drydockSvc := drydock.NewService(scope.Scope)
 	networkSvc := network.NewService(scope.Scope)
 
 	// Check if VM exists
-	vm, err := computeSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, resources.GetVMName(machine))
+	vm, err := drydockSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, resources.GetVMName(machine))
 	if err != nil {
 		return fmt.Errorf("error checking if vm exists: %v", err)
 	}
@@ -263,21 +263,21 @@ func (a *Actuator) Delete(ctx context.Context, cluster *clusterv1.Cluster, machi
 	//JEB nicID := (*vm.VirtualMachineProperties.NetworkProfile.NetworkInterfaces)[0].ID
 
 	// delete the VM instance
-	//JEB vmDeleteFuture, err := computeSvc.DeleteVM(scope.ClusterConfig.ResourceGroup, resources.GetVMName(machine))
+	//JEB vmDeleteFuture, err := drydockSvc.DeleteVM(scope.ClusterConfig.ResourceGroup, resources.GetVMName(machine))
 	//JEB if err != nil {
 	//JEB 		return fmt.Errorf("error deleting virtual machine: %v", err)
 	//JEB }
-	//JEB err = computeSvc.WaitForVMDeletionFuture(vmDeleteFuture)
+	//JEB err = drydockSvc.WaitForVMDeletionFuture(vmDeleteFuture)
 	//JEB if err != nil {
 	//JEB 		return fmt.Errorf("error waiting for virtual machine deletion: %v", err)
 	//JEB }
 
 	// delete OS disk associated with the VM
-	//JEB diskDeleteFuture, err := computeSvc.DeleteManagedDisk(scope.ClusterConfig.ResourceGroup, *osDiskName)
+	//JEB diskDeleteFuture, err := drydockSvc.DeleteManagedDisk(scope.ClusterConfig.ResourceGroup, *osDiskName)
 	//JEB if err != nil {
 	//JEB 	return fmt.Errorf("error deleting managed disk: %v", err)
 	//JEB }
-	//JEB err = computeSvc.WaitForDisksDeleteFuture(diskDeleteFuture)
+	//JEB err = drydockSvc.WaitForDisksDeleteFuture(diskDeleteFuture)
 	//JEB if err != nil {
 	//JEB 		return fmt.Errorf("error waiting for managed disk deletion: %v", err)
 	//JEB }
@@ -396,7 +396,7 @@ func (a *Actuator) Exists(ctx context.Context, cluster *clusterv1.Cluster, machi
 
 	defer scope.Close()
 
-	computeSvc := compute.NewService(scope.Scope)
+	drydockSvc := drydock.NewService(scope.Scope)
 	resourcesSvc := resources.NewService(scope.Scope)
 
 	resp, err := resourcesSvc.CheckGroupExistence(scope.ClusterConfig.ResourceGroup)
@@ -406,7 +406,7 @@ func (a *Actuator) Exists(ctx context.Context, cluster *clusterv1.Cluster, machi
 	if resp.StatusCode == 404 {
 		return false, nil
 	}
-	vm, err := computeSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, resources.GetVMName(machine))
+	vm, err := drydockSvc.VMIfExists(scope.ClusterConfig.ResourceGroup, resources.GetVMName(machine))
 	if err != nil {
 		return false, err
 	}

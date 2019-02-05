@@ -18,7 +18,7 @@ package actuators
 
 import (
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/compute"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/drydock"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/network"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/resources"
 	providerv1 "github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
@@ -28,13 +28,13 @@ import (
 // AirshipClients contains all the Airship clients used by the scopes.
 type AirshipClients struct {
 	// TODO: Remove legacy clients once interfaces are reimplemented
-	Compute   AirshipComputeClient
+	Drydock   AirshipDrydockClient
 	Network   AirshipNetworkClient
 	Resources AirshipResourcesClient
 
-	// Compute
-	VM    compute.VirtualMachinesClient
-	Disks compute.DisksClient
+	// Drydock
+	VM    drydock.VirtualMachinesClient
+	Disks drydock.DisksClient
 
 	// Network
 	VirtualNetworks   network.VirtualNetworksClient
@@ -49,18 +49,18 @@ type AirshipClients struct {
 	Tags        resources.TagsClient
 }
 
-// AirshipComputeClient defines the operations that will interact with the Airship Compute API
-type AirshipComputeClient interface {
+// AirshipDrydockClient defines the operations that will interact with the Airship Drydock API
+type AirshipDrydockClient interface {
 	// Virtual Machines Operations
-	RunCommand(resoureGroup string, name string, cmd string) (compute.VirtualMachinesRunCommandFuture, error)
-	VMIfExists(resourceGroup string, name string) (*compute.VirtualMachine, error)
-	DeleteVM(resourceGroup string, name string) (compute.VirtualMachinesDeleteFuture, error)
-	WaitForVMRunCommandFuture(future compute.VirtualMachinesRunCommandFuture) error
-	WaitForVMDeletionFuture(future compute.VirtualMachinesDeleteFuture) error
+	RunCommand(resoureGroup string, name string, cmd string) (drydock.VirtualMachinesRunCommandFuture, error)
+	VMIfExists(resourceGroup string, name string) (*drydock.VirtualMachine, error)
+	DeleteVM(resourceGroup string, name string) (drydock.VirtualMachinesDeleteFuture, error)
+	WaitForVMRunCommandFuture(future drydock.VirtualMachinesRunCommandFuture) error
+	WaitForVMDeletionFuture(future drydock.VirtualMachinesDeleteFuture) error
 
 	// Disk Operations
-	DeleteManagedDisk(resourceGroup string, name string) (compute.DisksDeleteFuture, error)
-	WaitForDisksDeleteFuture(future compute.DisksDeleteFuture) error
+	DeleteManagedDisk(resourceGroup string, name string) (drydock.DisksDeleteFuture, error)
+	WaitForDisksDeleteFuture(future drydock.DisksDeleteFuture) error
 }
 
 // AirshipNetworkClient defines the operations that will interact with the Airship Network API

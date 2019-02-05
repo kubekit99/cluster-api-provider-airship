@@ -14,22 +14,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package compute
+package drydock
 
-import (
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators"
-)
-
-// Service holds a collection of interfaces.
-// The interfaces are broken down like this to group functions together.
-// One alternative is to have a large list of functions from the ec2 client.
-type Service struct {
-	scope *actuators.Scope
+type StorageProfile struct {
+	OsDisk string
+}
+type NetworkProfile struct {
+	NetworkInterfaces string
 }
 
-// NewService returns a new service given the api clients.
-func NewService(scope *actuators.Scope) *Service {
-	return &Service{
-		scope: scope,
-	}
+type VirtualMachineProperties struct {
+	StorageProfile StorageProfile
+	NetworkProfile NetworkProfile
 }
+
+type VirtualMachine struct {
+	VirtualMachineProperties VirtualMachineProperties
+}
+type VirtualMachinesRunCommandFuture struct{}
+type VirtualMachinesDeleteFuture struct{}
+type DisksDeleteFuture struct{}
+type VirtualMachinesClient struct{}
+type DisksClient struct{}

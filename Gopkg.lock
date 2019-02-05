@@ -214,14 +214,6 @@
   version = "v1.1.5"
 
 [[projects]]
-  digest = "1:9cedee824c21326bd26950bd9e1ffe9dc4e7ca03dc8634d0e6f954ee6a383172"
-  name = "github.com/kr/fs"
-  packages = ["."]
-  pruneopts = "T"
-  revision = "1455def202f6e05b95cc7bfc7e8ae67ae5141eba"
-  version = "v0.1.0"
-
-[[projects]]
   digest = "1:3804a3a02964db8e6db3e5e7960ac1c1a9b12835642dd4f4ac4e56c749ec73eb"
   name = "github.com/markbates/inflect"
   packages = ["."]
@@ -342,14 +334,6 @@
   pruneopts = "T"
   revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
   version = "v0.8.1"
-
-[[projects]]
-  digest = "1:b30aeca6a06dc9fe20d938ff4d6ed1b43802c2caf3607463f999226f393a39fa"
-  name = "github.com/pkg/sftp"
-  packages = ["."]
-  pruneopts = "T"
-  revision = "e6f3261c6b04345b9c5b0122c12815384d332022"
-  version = "v1.9.0"
 
 [[projects]]
   digest = "1:3b5729e3fc486abc6fc16ce026331c3d196e788c3b973081ecf5d28ae3e1050d"
@@ -995,7 +979,6 @@
     "github.com/onsi/ginkgo",
     "github.com/onsi/gomega",
     "github.com/pkg/errors",
-    "github.com/pkg/sftp",
     "github.com/spf13/cobra",
     "golang.org/x/crypto/ssh",
     "k8s.io/api/core/v1",

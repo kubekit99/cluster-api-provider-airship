@@ -14,26 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package compute
+package drydock
 
 import (
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
 	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/compute"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/drydock"
 )
 
 // RunCommand executes a command on the VM.
-func (s *Service) RunCommand(resoureGroup string, name string, cmd string) (compute.VirtualMachinesRunCommandFuture, error) {
-	//JEB cmdInput := compute.RunCommandInput{
+func (s *Service) RunCommand(resoureGroup string, name string, cmd string) (drydock.VirtualMachinesRunCommandFuture, error) {
+	//JEB cmdInput := drydock.RunCommandInput{
 	//JEB		CommandID: to.StringPtr("RunShellScript"),
 	//JEB		Script:    to.StringSlicePtr([]string{cmd}),
 	//JEB }
 	//JEB return s.scope.AirshipClients.VM.RunCommand(s.scope.Context, resoureGroup, name, cmdInput)
-	return compute.VirtualMachinesRunCommandFuture{}, nil
+	return drydock.VirtualMachinesRunCommandFuture{}, nil
 }
 
 // VMIfExists returns the reference to the VM object if it exists.
-func (s *Service) VMIfExists(resourceGroup string, name string) (*compute.VirtualMachine, error) {
+func (s *Service) VMIfExists(resourceGroup string, name string) (*drydock.VirtualMachine, error) {
 	//JEB vm, err := s.scope.AirshipClients.VM.Get(s.scope.Context, resourceGroup, name, "")
 	//JEB if err != nil {
 	//JEB 		if aerr, ok := err.(autorest.DetailedError); ok {
@@ -48,19 +48,19 @@ func (s *Service) VMIfExists(resourceGroup string, name string) (*compute.Virtua
 }
 
 // DeleteVM deletes the virtual machine.
-func (s *Service) DeleteVM(resourceGroup string, name string) (compute.VirtualMachinesDeleteFuture, error) {
+func (s *Service) DeleteVM(resourceGroup string, name string) (drydock.VirtualMachinesDeleteFuture, error) {
 	//JEB return s.scope.AirshipClients.VM.Delete(s.scope.Context, resourceGroup, name)
-	return compute.VirtualMachinesDeleteFuture{}, nil
+	return drydock.VirtualMachinesDeleteFuture{}, nil
 }
 
 // WaitForVMRunCommandFuture returns when the RunCommand operation completes.
-func (s *Service) WaitForVMRunCommandFuture(future compute.VirtualMachinesRunCommandFuture) error {
+func (s *Service) WaitForVMRunCommandFuture(future drydock.VirtualMachinesRunCommandFuture) error {
 	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.VM.Client)
 	return nil
 }
 
 // WaitForVMDeletionFuture returns when the DeleteVM operation completes.
-func (s *Service) WaitForVMDeletionFuture(future compute.VirtualMachinesDeleteFuture) error {
+func (s *Service) WaitForVMDeletionFuture(future drydock.VirtualMachinesDeleteFuture) error {
 	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.VM.Client)
 	return nil
 }

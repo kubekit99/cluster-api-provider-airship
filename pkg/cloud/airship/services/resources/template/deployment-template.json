@@ -86,7 +86,7 @@
   "variables": {},
   "resources": [
     {
-      "type": "Microsoft.Compute/virtualMachines",
+      "type": "Microsoft.Drydock/virtualMachines",
       "name": "[parameters('virtualMachines_ClusterAPIVM_name')]",
       "tags":{
         "machine": "[parameters('clusterAPI_machine_name')]"
@@ -118,7 +118,7 @@
           "dataDisks": []
         },
         "osProfile": {
-          "computerName": "[parameters('virtualMachines_ClusterAPIVM_name')]",
+          "drydockrName": "[parameters('virtualMachines_ClusterAPIVM_name')]",
           "adminUsername": "[parameters('vm_user')]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": true,
@@ -189,7 +189,7 @@
         },
         "primary": true,
         "virtualMachine": {
-          "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_ClusterAPIVM_name'))]"
+          "id": "[resourceId('Microsoft.Drydock/virtualMachines', parameters('virtualMachines_ClusterAPIVM_name'))]"
         }
       },
       "dependsOn": [
@@ -217,11 +217,11 @@
     },
     {
       "apiVersion": "2015-06-15",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "type": "Microsoft.Drydock/virtualMachines/extensions",
       "name": "[concat(parameters('virtualMachines_ClusterAPIVM_name'), '/startup-script')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines/', parameters('virtualMachines_ClusterAPIVM_name'))]"
+        "[resourceId('Microsoft.Drydock/virtualMachines/', parameters('virtualMachines_ClusterAPIVM_name'))]"
       ],
       "tags": {
         "machine": "[parameters('clusterAPI_machine_name')]",
