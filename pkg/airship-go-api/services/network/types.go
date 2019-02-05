@@ -19,7 +19,12 @@ package network
 type InterfacesDeleteFuture struct{}
 type SecurityGroupsCreateOrUpdateFuture struct{}
 type SecurityGroup struct{}
-type PublicIPAddress struct{}
+type IPAddress struct {
+	IPAddress string
+}
+type PublicIPAddress struct {
+	IPAddress string
+}
 type PublicIPAddressesDeleteFuture struct{}
 type VirtualNetworksCreateOrUpdateFuture struct{}
 type VirtualNetworksClient struct{}

@@ -17,8 +17,6 @@ limitations under the License.
 package main
 
 import (
-	"log"
-
 	"github.com/kubekit99/cluster-api-provider-airship/cmd/versioninfo"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators/machine"
 	"sigs.k8s.io/cluster-api/cmd/clusterctl/cmd"
@@ -30,10 +28,7 @@ func registerCustomCommands() {
 }
 
 func main() {
-	machineActuator, err := machine.NewActuator(machine.ActuatorParams{})
-	if err != nil {
-		log.Fatalf("Error creating cluster provisioner for airship : %v", err)
-	}
+	machineActuator := machine.NewActuator(machine.ActuatorParams{})
 	common.RegisterClusterProvisioner("airship", machineActuator)
 	registerCustomCommands()
 	cmd.Execute()

@@ -18,6 +18,7 @@ package controller
 
 import (
 	airshipmachine "github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators/machine"
+	clientset "sigs.k8s.io/cluster-api/pkg/client/clientset_generated/clientset"
 	capimachine "sigs.k8s.io/cluster-api/pkg/controller/machine"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
@@ -26,11 +27,13 @@ import (
 func init() {
 	// AddToManagerFuncs is a list of functions to create controllers and add them to a manager.
 	AddToManagerFuncs = append(AddToManagerFuncs, func(m manager.Manager) error {
-		params := airshipmachine.ActuatorParams{}
-		machineActuator, err := airshipmachine.NewActuator(params)
+		cfg := m.GetConfig()
+		cs, err := clientset.NewForConfig(cfg)
 		if err != nil {
-			return err
+			panic(err)
 		}
+		params := airshipmachine.ActuatorParams{Client: cs.ClusterV1alpha1()}
+		machineActuator := airshipmachine.NewActuator(params)
 		return capimachine.AddWithActuator(m, machineActuator)
 	})
 }

@@ -19,8 +19,12 @@ package resources
 type Group struct{}
 type GroupsDeleteFuture struct{}
 type DeploymentsCreateOrUpdateFuture struct{}
-type Deployment struct{}
-type DeploymentExtended struct{}
+type Deployment struct {
+	Name string
+}
+type DeploymentExtended struct {
+	Name string
+}
 type GroupsClient struct{}
 type DeploymentsClient struct{}
 type TagsClient struct{}

@@ -1,5 +1,5 @@
 /*
-Copyright 2018 The Kubernetes authors.
+Copyright 2018 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,37 +18,107 @@ package cluster
 
 import (
 	"fmt"
-	"log"
 
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/network"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/resources"
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/deployer"
+	"github.com/pkg/errors"
+	"k8s.io/klog"
 	clusterv1 "sigs.k8s.io/cluster-api/pkg/apis/cluster/v1alpha1"
 	client "sigs.k8s.io/cluster-api/pkg/client/clientset_generated/clientset/typed/cluster/v1alpha1"
 )
 
 // Actuator is responsible for performing cluster reconciliation
 type Actuator struct {
-	clustersGetter client.ClustersGetter
+	*deployer.Deployer
+
+	client client.ClusterV1alpha1Interface
 }
 
 // ActuatorParams holds parameter information for Actuator
 type ActuatorParams struct {
-	ClustersGetter client.ClustersGetter
+	Client client.ClusterV1alpha1Interface
 }
 
 // NewActuator creates a new Actuator
-func NewActuator(params ActuatorParams) (*Actuator, error) {
+func NewActuator(params ActuatorParams) *Actuator {
 	return &Actuator{
-		clustersGetter: params.ClustersGetter,
-	}, nil
+		Deployer: deployer.New(deployer.Params{ScopeGetter: actuators.DefaultScopeGetter}),
+		client:   params.Client,
+	}
 }
 
-// Reconcile reconciles a cluster and is invoked by the Cluster Controller
+// Reconcile creates or applies updates to the cluster.
 func (a *Actuator) Reconcile(cluster *clusterv1.Cluster) error {
-	log.Printf("Reconciling cluster %v.", cluster.Name)
-	return fmt.Errorf("TODO: Not yet implemented")
+	klog.Infof("Reconciling cluster %v", cluster.Name)
+
+	scope, err := actuators.NewScope(actuators.ScopeParams{Cluster: cluster, Client: a.client})
+	if err != nil {
+		return errors.Errorf("failed to create scope: %+v", err)
+	}
+
+	defer scope.Close()
+
+	networkSvc := network.NewService(scope)
+	resourcesSvc := resources.NewService(scope)
+
+	// Reconcile resource group
+	_, err = resourcesSvc.CreateOrUpdateGroup(scope.ClusterConfig.ResourceGroup, scope.ClusterConfig.Location)
+	if err != nil {
+		return fmt.Errorf("failed to create or update resource group: %v", err)
+	}
+
+	// Reconcile network security group
+	networkSGFuture, err := networkSvc.CreateOrUpdateNetworkSecurityGroup(scope.ClusterConfig.ResourceGroup, "ClusterAPINSG", scope.ClusterConfig.Location)
+	if err != nil {
+		return fmt.Errorf("error creating or updating network security group: %v", err)
+	}
+	err = networkSvc.WaitForNetworkSGsCreateOrUpdateFuture(*networkSGFuture)
+	if err != nil {
+		return fmt.Errorf("error waiting for network security group creation or update: %v", err)
+	}
+
+	// Reconcile virtual network
+	vnetFuture, err := networkSvc.CreateOrUpdateVnet(scope.ClusterConfig.ResourceGroup, "", scope.ClusterConfig.Location)
+	if err != nil {
+		return fmt.Errorf("error creating or updating virtual network: %v", err)
+	}
+	err = networkSvc.WaitForVnetCreateOrUpdateFuture(*vnetFuture)
+	if err != nil {
+		return fmt.Errorf("error waiting for virtual network creation or update: %v", err)
+	}
+	return nil
 }
 
-// Delete deletes a cluster and is invoked by the Cluster Controller
+// Delete deletes a cluster and is invoked by the Cluster Controller.
 func (a *Actuator) Delete(cluster *clusterv1.Cluster) error {
-	log.Printf("Deleting cluster %v.", cluster.Name)
-	return fmt.Errorf("TODO: Not yet implemented")
+	klog.Infof("Reconciling cluster %v", cluster.Name)
+
+	scope, err := actuators.NewScope(actuators.ScopeParams{Cluster: cluster, Client: a.client})
+	if err != nil {
+		return errors.Errorf("failed to create scope: %+v", err)
+	}
+
+	defer scope.Close()
+
+	resourcesSvc := resources.NewService(scope)
+
+	resp, err := resourcesSvc.CheckGroupExistence(scope.ClusterConfig.ResourceGroup)
+	if err != nil {
+		return fmt.Errorf("error checking for resource group existence: %v", err)
+	}
+	if resp.StatusCode == 404 {
+		return fmt.Errorf("resource group %v does not exist", scope.ClusterConfig.ResourceGroup)
+	}
+
+	groupsDeleteFuture, err := resourcesSvc.DeleteGroup(scope.ClusterConfig.ResourceGroup)
+	if err != nil {
+		return fmt.Errorf("error deleting resource group: %v", err)
+	}
+	err = resourcesSvc.WaitForGroupsDeleteFuture(groupsDeleteFuture)
+	if err != nil {
+		return fmt.Errorf("error waiting for resource group deletion: %v", err)
+	}
+	return nil
 }

@@ -16,12 +16,23 @@ limitations under the License.
 
 package compute
 
-type VirtualMachine struct{}
+type StorageProfile struct {
+	OsDisk string
+}
+type NetworkProfile struct {
+	NetworkInterfaces string
+}
+
+type VirtualMachineProperties struct {
+	StorageProfile StorageProfile
+	NetworkProfile NetworkProfile
+}
+
+type VirtualMachine struct {
+	VirtualMachineProperties VirtualMachineProperties
+}
 type VirtualMachinesRunCommandFuture struct{}
 type VirtualMachinesDeleteFuture struct{}
 type DisksDeleteFuture struct{}
 type VirtualMachinesClient struct{}
 type DisksClient struct{}
-
-// NewVirtualMachinesClient
-// NewDisksClient

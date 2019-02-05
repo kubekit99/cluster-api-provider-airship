@@ -60,19 +60,13 @@ func main() {
 		panic(err)
 	}
 
-	clusterActuator, err := cluster.NewActuator(cluster.ActuatorParams{
-		ClustersGetter: cs.ClusterV1alpha1(),
+	clusterActuator := cluster.NewActuator(cluster.ActuatorParams{
+		Client: cs.ClusterV1alpha1(),
 	})
-	if err != nil {
-		panic(err)
-	}
 
-	machineActuator, err := machine.NewActuator(machine.ActuatorParams{
-		MachinesGetter: cs.ClusterV1alpha1(),
+	machineActuator := machine.NewActuator(machine.ActuatorParams{
+		Client: cs.ClusterV1alpha1(),
 	})
-	if err != nil {
-		panic(err)
-	}
 
 	// Register our cluster deployer (the interface is in clusterctl and we define the Deployer interface on the actuator)
 	common.RegisterClusterProvisioner("airship", clusterActuator)

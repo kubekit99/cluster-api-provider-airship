@@ -16,4 +16,6 @@ limitations under the License.
 
 package autorest
 
-type Response struct{}
+type Response struct {
+	StatusCode int
+}
