@@ -36,6 +36,9 @@ type AirshipClusterProviderSpec struct {
 	DeploymentConfiguration DeploymentConfigurationSpec `json:"deploymentConfiguration"`
 	DeploymentStrategy      DeploymentStrategySpec      `json:"deploymentStrategy"`
 
+	// Drydock Configuration
+	HardwareProfiles []HardwareProfileSpec `json:"hardwareProfiles"`
+
 	// CACertificate is a PEM encoded CA Certificate for the control plane nodes.
 	CACertificate []byte `json:"caCertificate,omitempty"`
 

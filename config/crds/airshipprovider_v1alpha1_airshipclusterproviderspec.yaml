@@ -173,6 +173,32 @@ spec:
           required:
           - groups
           type: object
+        hardwareProfiles:
+          items:
+            properties:
+              biosVersion:
+                type: string
+              bootMode:
+                type: string
+              bootstrapProtocol:
+                type: string
+              cpuSets:
+                type: object
+              deviceAliases:
+                type: object
+              generation:
+                type: string
+              hugepages:
+                type: object
+              hwVersion:
+                type: string
+              pxeInterface:
+                format: double
+                type: number
+              vendor:
+                type: string
+            type: object
+          type: array
         kind:
           type: string
         location:
@@ -186,6 +212,7 @@ spec:
       - location
       - deploymentConfiguration
       - deploymentStrategy
+      - hardwareProfiles
   version: v1alpha1
 status:
   acceptedNames:

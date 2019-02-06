@@ -46,6 +46,13 @@ func (in *AirshipClusterProviderSpec) DeepCopyInto(out *AirshipClusterProviderSp
 	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
 	in.DeploymentConfiguration.DeepCopyInto(&out.DeploymentConfiguration)
 	in.DeploymentStrategy.DeepCopyInto(&out.DeploymentStrategy)
+	if in.HardwareProfiles != nil {
+		in, out := &in.HardwareProfiles, &out.HardwareProfiles
+		*out = make([]HardwareProfileSpec, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 	if in.CACertificate != nil {
 		in, out := &in.CACertificate, &out.CACertificate
 		*out = make([]byte, len(*in))
@@ -1881,16 +1888,32 @@ func (in *Storage) DeepCopyInto(out *Storage) {
 	*out = *in
 	if in.PhysicalDevices != nil {
 		in, out := &in.PhysicalDevices, &out.PhysicalDevices
-		*out = make(map[string]PhysicalDevicesItem, len(*in))
+		*out = make(map[string]*PhysicalDevicesItem, len(*in))
 		for key, val := range *in {
-			(*out)[key] = *val.DeepCopy()
+			var outVal *PhysicalDevicesItem
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				in, out := &val, &outVal
+				*out = new(PhysicalDevicesItem)
+				(*in).DeepCopyInto(*out)
+			}
+			(*out)[key] = outVal
 		}
 	}
 	if in.VolumeGroups != nil {
 		in, out := &in.VolumeGroups, &out.VolumeGroups
-		*out = make(map[string]VolumeGroupsItem, len(*in))
+		*out = make(map[string]*VolumeGroupsItem, len(*in))
 		for key, val := range *in {
-			(*out)[key] = *val.DeepCopy()
+			var outVal *VolumeGroupsItem
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				in, out := &val, &outVal
+				*out = new(VolumeGroupsItem)
+				(*in).DeepCopyInto(*out)
+			}
+			(*out)[key] = outVal
 		}
 	}
 	return
