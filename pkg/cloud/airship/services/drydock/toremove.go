@@ -22,6 +22,18 @@ import (
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/drydock"
 )
 
+// DeleteManagedDisk deletes a managed disk resource.
+func (s *Service) DeleteManagedDisk(resourceGroup string, name string) (drydock.DisksDeleteFuture, error) {
+	//JEB return s.scope.AirshipClients.Disks.Delete(s.scope.Context, resourceGroup, name)
+	return drydock.DisksDeleteFuture{}, nil
+}
+
+// WaitForDisksDeleteFuture returns when the DeleteManagedDisk operation completes.
+func (s *Service) WaitForDisksDeleteFuture(future drydock.DisksDeleteFuture) error {
+	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Disks.Client)
+	return nil
+}
+
 // RunCommand executes a command on the VM.
 func (s *Service) RunCommand(resoureGroup string, name string, cmd string) (drydock.VirtualMachinesRunCommandFuture, error) {
 	//JEB cmdInput := drydock.RunCommandInput{

@@ -23,9 +23,82 @@ import (
 )
 
 const (
+	// VnetDefaultName is the default name for the cluster's virtual armada.
+	VnetDefaultName = "ClusterAPIVnet"
+	// SubnetDefaultName is the default name for the cluster's subnet.
+	SubnetDefaultName        = "ClusterAPISubnet"
+	defaultPrivateSubnetCIDR = "10.0.0.0/24"
 	// SecurityGroupDefaultName is the default name for the network security group of the cluster.
 	SecurityGroupDefaultName = "ClusterAPINSG"
 )
+
+// CreateOrUpdateVnet creates or updates a virtual network resource.
+func (s *Service) CreateOrUpdateVnet(resourceGroupName string, virtualNetworkName string, location string) (*armada.VirtualNetworksCreateOrUpdateFuture, error) {
+	//JEB	if virtualNetworkName == "" {
+	//JEB		virtualNetworkName = VnetDefaultName
+	//JEB	}
+	//JEB
+	//JEB	subnets := []armada.Subnet{
+	//JEB		{
+	//JEB			Name: to.StringPtr(SubnetDefaultName),
+	//JEB			SubnetPropertiesFormat: &armada.SubnetPropertiesFormat{
+	//JEB				AddressPrefix: to.StringPtr(defaultPrivateSubnetCIDR),
+	//JEB			},
+	//JEB		},
+	//JEB	}
+	//JEB	virtualNetworkProperties := armada.VirtualNetworkPropertiesFormat{
+	//JEB		AddressSpace: &armada.AddressSpace{
+	//JEB			AddressPrefixes: &[]string{defaultPrivateSubnetCIDR},
+	//JEB		},
+	//JEB		Subnets: &subnets,
+	//JEB	}
+	//JEB	virtualNetwork := armada.VirtualNetwork{
+	//JEB		Location:                       to.StringPtr(location),
+	//JEB		VirtualNetworkPropertiesFormat: &virtualNetworkProperties,
+	//JEB	}
+	//JEB	sgFuture, err := s.scope.AirshipClients.VirtualNetworks.CreateOrUpdate(s.scope.Context, resourceGroupName, virtualNetworkName, virtualNetwork)
+	//JEB	if err != nil {
+	//JEB		return nil, err
+	//JEB	}
+	//JEB	return &sgFuture, nil
+	return nil, nil
+}
+
+// WaitForVnetCreateOrUpdateFuture returns when the CreateOrUpdateVnet operation completes.
+func (s *Service) WaitForVnetCreateOrUpdateFuture(future armada.VirtualNetworksCreateOrUpdateFuture) error {
+	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.VirtualNetworks.Client)
+	return nil
+}
+
+// DeleteNetworkInterface deletes the NIC resource.
+func (s *Service) DeleteNetworkInterface(resourceGroup string, networkInterfaceName string) (armada.InterfacesDeleteFuture, error) {
+	//JEB return s.scope.AirshipClients.Interfaces.Delete(s.scope.Context, resourceGroup, networkInterfaceName)
+	return armada.InterfacesDeleteFuture{}, nil
+}
+
+// WaitForNetworkInterfacesDeleteFuture waits for the DeleteNetworkInterface operation to complete.
+func (s *Service) WaitForNetworkInterfacesDeleteFuture(future armada.InterfacesDeleteFuture) error {
+	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Interfaces.Client)
+	return nil
+}
+
+// GetPublicIPAddress retrieves the Public IP address resource.
+func (s *Service) GetPublicIPAddress(resourceGroup string, IPName string) (armada.PublicIPAddress, error) {
+	//JEB return s.scope.AirshipClients.PublicIPAddresses.Get(s.scope.Context, resourceGroup, IPName, "")
+	return armada.PublicIPAddress{}, nil
+}
+
+// DeletePublicIPAddress deletes the Public IP address resource.
+func (s *Service) DeletePublicIPAddress(resourceGroup string, IPName string) (armada.PublicIPAddressesDeleteFuture, error) {
+	//JEB return s.scope.AirshipClients.PublicIPAddresses.Delete(s.scope.Context, resourceGroup, IPName)
+	return armada.PublicIPAddressesDeleteFuture{}, nil
+}
+
+// WaitForPublicIPAddressDeleteFuture waits for the DeletePublicIPAddress operation to complete.
+func (s *Service) WaitForPublicIPAddressDeleteFuture(future armada.PublicIPAddressesDeleteFuture) error {
+	//JEB return future.Future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.PublicIPAddresses.Client)
+	return nil
+}
 
 // NetworkSGIfExists returns the nsg reference if the nsg resource exists.
 func (s *Service) NetworkSGIfExists(resourceGroupName string, networkSecurityGroupName string) (*armada.SecurityGroup, error) {

@@ -22,7 +22,10 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"strings"
 
+	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
+	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/deckhand"
 	providerv1 "github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/armada"
@@ -298,4 +301,39 @@ func readJSON(path string) (*map[string]interface{}, error) {
 func base64EncodeCommand(command string) *string {
 	encoded := base64.StdEncoding.EncodeToString([]byte(command))
 	return &encoded
+}
+
+// CreateOrUpdateGroup creates or updates an airship resource group.
+func (s *Service) CreateOrUpdateGroup(resourceGroupName string, location string) (resources.Group, error) {
+	//JEB return s.scope.AirshipClients.Groups.CreateOrUpdate(s.scope.Context, resourceGroupName, resources.Group{Location: to.StringPtr(location)})
+	return resources.Group{}, nil
+
+}
+
+// DeleteGroup deletes an airship resource group.
+func (s *Service) DeleteGroup(resourceGroupName string) (resources.GroupsDeleteFuture, error) {
+	//JEB return s.scope.AirshipClients.Groups.Delete(s.scope.Context, resourceGroupName)
+	return resources.GroupsDeleteFuture{}, nil
+}
+
+// CheckGroupExistence checks oif the resource group exists or not.
+func (s *Service) CheckGroupExistence(resourceGroupName string) (autorest.Response, error) {
+	//JEB return s.scope.AirshipClients.Groups.CheckExistence(s.scope.Context, resourceGroupName)
+	return autorest.Response{}, nil
+}
+
+// WaitForGroupsDeleteFuture returns when the DeleteGroup operation completes.
+func (s *Service) WaitForGroupsDeleteFuture(future resources.GroupsDeleteFuture) error {
+	//JEB return future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Groups.Client)
+	return nil
+}
+
+// ResourceName extracts the name of the resource from its ID.
+func ResourceName(id string) (string, error) {
+	parts := strings.Split(id, "/")
+	name := parts[len(parts)-1]
+	if len(name) == 0 {
+		return "", fmt.Errorf("identifier did not contain resource name")
+	}
+	return name, nil
 }
