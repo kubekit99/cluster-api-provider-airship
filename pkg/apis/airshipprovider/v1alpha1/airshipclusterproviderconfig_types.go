@@ -37,7 +37,13 @@ type AirshipClusterProviderSpec struct {
 	DeploymentStrategy      DeploymentStrategySpec      `json:"deploymentStrategy"`
 
 	// Drydock Configuration
+	// JEB: This is common configuration for the hardware. Force to add it to the cluster
+	// for right now.
 	HardwareProfiles []HardwareProfileSpec `json:"hardwareProfiles"`
+
+	// JEB: This is network configuration. The generic cluster definition account s for
+	// CNI/calico setup up, but does describe the underlying network.
+	Networks []NetworkSpec `json:"networks"`
 
 	// CACertificate is a PEM encoded CA Certificate for the control plane nodes.
 	CACertificate []byte `json:"caCertificate,omitempty"`
@@ -46,6 +52,7 @@ type AirshipClusterProviderSpec struct {
 	CAPrivateKey []byte `json:"caKey,omitempty"`
 }
 
+//
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 func init() {

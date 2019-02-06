@@ -54,9 +54,9 @@ func (d *Deployer) GetIP(cluster *clusterv1.Cluster, machine *clusterv1.Machine)
 	}
 
 	// TODO: Reimplement using load balancer
-	if scope.ClusterStatus != nil && scope.ClusterStatus.Network.APIServerIP.IPAddress != "" {
-		return scope.ClusterStatus.Network.APIServerIP.IPAddress, nil
-	}
+	//JEB if scope.ClusterStatus != nil && scope.ClusterStatus.Network.APIServerIP.IPAddress != "" {
+	//JEB		return scope.ClusterStatus.Network.APIServerIP.IPAddress, nil
+	//JEB }
 
 	pipsvc := armada.NewService(scope)
 

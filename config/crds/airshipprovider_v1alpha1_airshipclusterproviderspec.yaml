@@ -205,6 +205,61 @@ spec:
           type: string
         metadata:
           type: object
+        networks:
+          items:
+            properties:
+              cidr:
+                type: string
+              dhcpRelay:
+                properties:
+                  selfIp:
+                    type: string
+                  upstreamTarget:
+                    type: string
+                type: object
+              dns:
+                properties:
+                  domain:
+                    type: string
+                  servers:
+                    type: string
+                type: object
+              labels:
+                type: object
+              mtu:
+                format: double
+                type: number
+              ranges:
+                items:
+                  properties:
+                    end:
+                      type: string
+                    start:
+                      type: string
+                    type:
+                      type: string
+                  type: object
+                type: array
+              routedomain:
+                type: string
+              routes:
+                items:
+                  properties:
+                    gateway:
+                      type: string
+                    metric:
+                      format: double
+                      type: number
+                    routedomain:
+                      type: string
+                    subnet:
+                      type: string
+                  type: object
+                type: array
+              vlan:
+                type: string
+            type: object
+          type: array
         resourceGroup:
           type: string
       required:
@@ -213,6 +268,7 @@ spec:
       - deploymentConfiguration
       - deploymentStrategy
       - hardwareProfiles
+      - networks
   version: v1alpha1
 status:
   acceptedNames:

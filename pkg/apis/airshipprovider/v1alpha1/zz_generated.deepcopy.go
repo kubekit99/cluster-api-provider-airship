@@ -53,6 +53,13 @@ func (in *AirshipClusterProviderSpec) DeepCopyInto(out *AirshipClusterProviderSp
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.Networks != nil {
+		in, out := &in.Networks, &out.Networks
+		*out = make([]NetworkSpec, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 	if in.CACertificate != nil {
 		in, out := &in.CACertificate, &out.CACertificate
 		*out = make([]byte, len(*in))
@@ -89,8 +96,6 @@ func (in *AirshipClusterProviderStatus) DeepCopyInto(out *AirshipClusterProvider
 	*out = *in
 	out.TypeMeta = in.TypeMeta
 	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
-	in.Network.DeepCopyInto(&out.Network)
-	in.Bastion.DeepCopyInto(&out.Bastion)
 	return
 }
 
@@ -167,16 +172,6 @@ func (in *AirshipMachineProviderStatus) DeepCopyInto(out *AirshipMachineProvider
 	*out = *in
 	out.TypeMeta = in.TypeMeta
 	in.ObjectMeta.DeepCopyInto(&out.ObjectMeta)
-	if in.VMID != nil {
-		in, out := &in.VMID, &out.VMID
-		*out = new(string)
-		**out = **in
-	}
-	if in.InstanceState != nil {
-		in, out := &in.InstanceState, &out.InstanceState
-		*out = new(string)
-		**out = **in
-	}
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]AirshipMachineProviderCondition, len(*in))

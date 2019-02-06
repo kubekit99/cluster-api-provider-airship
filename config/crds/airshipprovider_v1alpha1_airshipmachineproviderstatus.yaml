@@ -42,14 +42,10 @@ spec:
             - message
             type: object
           type: array
-        instanceState:
-          type: string
         kind:
           type: string
         metadata:
           type: object
-        vmId:
-          type: string
   version: v1alpha1
 status:
   acceptedNames:

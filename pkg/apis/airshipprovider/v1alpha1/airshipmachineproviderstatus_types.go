@@ -29,14 +29,14 @@ import (
 type AirshipMachineProviderStatus struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// JEB: Need to find on Drydock a state reflecting the node.
 	// VMID is the instance ID of the machine created in Airship.
 	// +optional
-	VMID *string `json:"vmId,omitempty"`
-
+	// VMID *string `json:"vmId,omitempty"`
 	// InstanceState is the state of the Airship instance for this machine.
 	// +optional
-	InstanceState *string `json:"instanceState,omitempty"`
-
+	// InstanceState *string `json:"instanceState,omitempty"`
 	// Conditions is a set of conditions associated with the Machine to indicate
 	// errors or other status.
 	// +optional

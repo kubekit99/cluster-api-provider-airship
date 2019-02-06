@@ -124,22 +124,26 @@ type Scope struct {
 // TODO: Implement scope functions
 // Network returns the cluster network object.
 func (s *Scope) Network() *v1alpha1.Network {
-	return &s.ClusterStatus.Network
+	//JEB return &s.ClusterStatus.Network
+	return nil
 }
 
 // Vnet returns the cluster Vnet.
 func (s *Scope) Vnet() *v1alpha1.Vnet {
-	return &s.ClusterStatus.Network.Vnet
+	//JEB return &s.ClusterStatus.Network.Vnet
+	return nil
 }
 
 // Subnets returns the cluster subnets.
 func (s *Scope) Subnets() v1alpha1.Subnets {
-	return s.ClusterStatus.Network.Subnets
+	//JEB return s.ClusterStatus.Network.Subnets
+	return nil
 }
 
 // SecurityGroups returns the cluster security groups as a map, it creates the map if empty.
 func (s *Scope) SecurityGroups() map[v1alpha1.SecurityGroupRole]*v1alpha1.SecurityGroup {
-	return s.ClusterStatus.Network.SecurityGroups
+	//JEB return s.ClusterStatus.Network.SecurityGroups
+	return nil
 }
 
 // Name returns the cluster name.
