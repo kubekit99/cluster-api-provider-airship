@@ -26,10 +26,10 @@ type KernelParams2 struct {
 
 // LogicalVolumesItems
 type LogicalVolumesItems2 struct {
-	Filesystem *Filesystem `json:"filesystem,omitempty"`
-	LvUuid     string      `json:"lv_uuid,omitempty"`
-	Name       string      `json:"name,omitempty"`
-	Size       string      `json:"size,omitempty"`
+	Filesystem *Filesystem2 `json:"filesystem,omitempty"`
+	LvUuid     string       `json:"lv_uuid,omitempty"`
+	Name       string       `json:"name,omitempty"`
+	Size       string       `json:"size,omitempty"`
 }
 
 // Metadata
@@ -76,14 +76,14 @@ type Platform2 struct {
 
 // Root
 type HostProfileSpec struct {
-	HardwareProfile string                     `json:"hardware_profile,omitempty"`
-	HostProfile     string                     `json:"host_profile,omitempty"`
-	Interfaces      map[string]*InterfacesItem `json:"interfaces,omitempty"`
-	Metadata        *Metadata                  `json:"metadata,omitempty"`
-	Oob             *Oob                       `json:"oob,omitempty"`
-	Platform        *Platform                  `json:"platform,omitempty"`
-	PrimaryNetwork  string                     `json:"primary_network,omitempty"`
-	Storage         *Storage                   `json:"storage,omitempty"`
+	HardwareProfile string                      `json:"hardware_profile,omitempty"`
+	HostProfile     string                      `json:"host_profile,omitempty"`
+	Interfaces      map[string]*InterfacesItem2 `json:"interfaces,omitempty"`
+	Metadata        *Metadata2                  `json:"metadata,omitempty"`
+	Oob             *Oob2                       `json:"oob,omitempty"`
+	Platform        *Platform2                  `json:"platform,omitempty"`
+	PrimaryNetwork  string                      `json:"primary_network,omitempty"`
+	Storage         *Storage2                   `json:"storage,omitempty"`
 }
 
 // Sriov
