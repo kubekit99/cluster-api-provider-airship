@@ -27,10 +27,18 @@ spec:
                     type: string
                 type: object
               type: array
+            hardwareProfile:
+              type: string
+            hostProfile:
+              type: string
             interfaces:
               type: object
             metadata:
               properties:
+                bootMac:
+                  type: string
+                ownerData:
+                  type: object
                 rack:
                   type: string
                 tags:
@@ -55,8 +63,17 @@ spec:
                   type: string
                 kernel:
                   type: string
+                kernelParams:
+                  type: object
               type: object
+            primaryNetwork:
+              type: string
             storage:
+              properties:
+                physicalDevices:
+                  type: object
+                volumeGroups:
+                  type: object
               type: object
           type: object
         kind:

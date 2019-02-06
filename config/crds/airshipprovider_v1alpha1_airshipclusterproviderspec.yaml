@@ -22,6 +22,157 @@ spec:
         caKey:
           format: byte
           type: string
+        deploymentConfiguration:
+          properties:
+            armada:
+              properties:
+                getReleasesTimeout:
+                  format: int64
+                  type: integer
+                getStatusTimeout:
+                  format: int64
+                  type: integer
+                manifest:
+                  type: string
+                postApplyTimeout:
+                  format: int64
+                  type: integer
+                validateDesignTimeout:
+                  format: int64
+                  type: integer
+              required:
+              - manifest
+              type: object
+            kubernetes:
+              properties:
+                nodeStatusInterval:
+                  format: int64
+                  type: integer
+                nodeStatusTimeout:
+                  format: int64
+                  type: integer
+              type: object
+            kubernetesProvisioner:
+              properties:
+                clearLabelsTimeout:
+                  format: int64
+                  type: integer
+                drainGracePeriod:
+                  format: int64
+                  type: integer
+                drainTimeout:
+                  format: int64
+                  type: integer
+                etcdReadyTimeout:
+                  format: int64
+                  type: integer
+                removeEtcdTimeout:
+                  format: int64
+                  type: integer
+              type: object
+            physicalProvisioner:
+              properties:
+                deployInterval:
+                  format: int64
+                  type: integer
+                deployTimeout:
+                  format: int64
+                  type: integer
+                deploymentStrategy:
+                  type: string
+                destroyInterval:
+                  format: int64
+                  type: integer
+                destroyTimeout:
+                  format: int64
+                  type: integer
+                joinWait:
+                  format: int64
+                  type: integer
+                prepareNodeInterval:
+                  format: int64
+                  type: integer
+                prepareNodeTimeout:
+                  format: int64
+                  type: integer
+                prepareSiteInterval:
+                  format: int64
+                  type: integer
+                prepareSiteTimeout:
+                  format: int64
+                  type: integer
+                relabelNodesInterval:
+                  format: int64
+                  type: integer
+                relabelNodesTimeout:
+                  format: int64
+                  type: integer
+                verifyInterval:
+                  format: int64
+                  type: integer
+                verifyTimeout:
+                  format: int64
+                  type: integer
+              type: object
+          required:
+          - armada
+          type: object
+        deploymentStrategy:
+          properties:
+            groups:
+              items:
+                properties:
+                  critical:
+                    type: boolean
+                  dependsOn:
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    type: string
+                  selectors:
+                    items:
+                      properties:
+                        nodeLabels:
+                          items:
+                            type: string
+                          type: array
+                        nodeNames:
+                          items:
+                            type: string
+                          type: array
+                        nodeTags:
+                          items:
+                            type: string
+                          type: array
+                        rackNames:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  successCriteria:
+                    properties:
+                      maximumFailedNodes:
+                        format: int64
+                        type: integer
+                      minimumSuccessfulNodes:
+                        format: int64
+                        type: integer
+                      percentSuccessfulNodes:
+                        format: int64
+                        type: integer
+                    type: object
+                required:
+                - critical
+                - dependsOn
+                - name
+                - selectors
+                type: object
+              type: array
+          required:
+          - groups
+          type: object
         kind:
           type: string
         location:
@@ -33,6 +184,8 @@ spec:
       required:
       - resourceGroup
       - location
+      - deploymentConfiguration
+      - deploymentStrategy
   version: v1alpha1
 status:
   acceptedNames:

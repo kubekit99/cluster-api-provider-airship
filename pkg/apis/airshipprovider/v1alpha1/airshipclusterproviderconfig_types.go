@@ -32,6 +32,10 @@ type AirshipClusterProviderSpec struct {
 	ResourceGroup string `json:"resourceGroup"`
 	Location      string `json:"location"`
 
+	// Shiyard DeploymentConfiguration
+	DeploymentConfiguration DeploymentConfigurationSpec `json:"deploymentConfiguration"`
+	DeploymentStrategy      DeploymentStrategySpec      `json:"deploymentStrategy"`
+
 	// CACertificate is a PEM encoded CA Certificate for the control plane nodes.
 	CACertificate []byte `json:"caCertificate,omitempty"`
 
