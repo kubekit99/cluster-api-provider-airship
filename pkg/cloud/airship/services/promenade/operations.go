@@ -20,6 +20,14 @@ import (
 // "github.com/kubekit99/airship-go-api/promenade/services/promenade"
 )
 
+// From Promenade API Definition
+// func (a *Client) GetConfig(params *GetConfigParams) (*GetConfigOK, error) {
+// func (a *Client) GetHealth(params *GetHealthParams) (*GetHealthOK, error) {
+// func (a *Client) GetJoinScripts(params *GetJoinScriptsParams) (*GetJoinScriptsOK, error) {
+// func (a *Client) GetVersions(params *GetVersionsParams) (*GetVersionsOK, error) {
+// func (a *Client) UpdateNodeLabels(params *UpdateNodeLabelsParams) (*UpdateNodeLabelsOK, error) {
+// func (a *Client) ValidateDesign(params *ValidateDesignParams) (*ValidateDesignOK, error) {
+
 // WaitForSomething
 func (s *Service) WaitForSomething(thething string) (string, error) {
 	return thething, nil

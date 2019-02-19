@@ -36,6 +36,24 @@ const (
 	templateFile = "deployment-template.json"
 )
 
+// From Deckhand API Definition
+// func (a *Client) CommitRevision(params *CommitRevisionParams) (*CommitRevisionOK, error)
+// func (a *Client) DeleteAllRevisions(params *DeleteAllRevisionsParams) (*DeleteAllRevisionsOK, error)
+// func (a *Client) DeleteAllTags(params *DeleteAllTagsParams) (*DeleteAllTagsOK, error)
+// func (a *Client) DeleteRevisionTagByID(params *DeleteRevisionTagByIDParams) (*DeleteRevisionTagByIDOK, error)
+// func (a *Client) GetAllValidations(params *GetAllValidationsParams) (*GetAllValidationsOK, error)
+// func (a *Client) GetConfig(params *GetConfigParams) (*GetConfigOK, error)
+// func (a *Client) GetDocumentsByID(params *GetDocumentsByIDParams) (*GetDocumentsByIDOK, error)
+// func (a *Client) GetRenderedDocumentsByID(params *GetRenderedDocumentsByIDParams) (*GetRenderedDocumentsByIDOK, error)
+// func (a *Client) GetRevisionByID(params *GetRevisionByIDParams) (*GetRevisionByIDOK, error)
+// func (a *Client) GetValidationByID(params *GetValidationByIDParams) (*GetValidationByIDOK, error)
+// func (a *Client) GetValidationEntryByID(params *GetValidationEntryByIDParams) (*GetValidationEntryByIDOK, error)
+// func (a *Client) ProbeLiveness(params *ProbeLivenessParams) (*ProbeLivenessOK, error)
+// func (a *Client) ProbeReadiness(params *ProbeReadinessParams) (*ProbeReadinessOK, error)
+// func (a *Client) RollbackRevision(params *RollbackRevisionParams) (*RollbackRevisionOK, error)
+// func (a *Client) ShowRevisionDeepDiff(params *ShowRevisionDeepDiffParams) (*ShowRevisionDeepDiffOK, error)
+// func (a *Client) ShowRevisionDiff(params *ShowRevisionDiffParams) (*ShowRevisionDiffOK, error)
+
 // CreateOrUpdateDeployment is used to create or update a kubernetes cluster. It does so by creating or updating an ARM deployment.
 func (s *Service) CreateOrUpdateDeployment(machine *clusterv1.Machine, clusterConfig *providerv1.AirshipClusterProviderSpec, machineConfig *providerv1.AirshipMachineProviderSpec) (*deckhand.DeploymentsCreateOrUpdateFuture, error) {
 	// Parse the ARM template
@@ -60,7 +78,7 @@ func (s *Service) CreateOrUpdateDeployment(machine *clusterv1.Machine, clusterCo
 	//JEB return nil, err
 	//JEB }
 	//JEB return &deploymentFuture, nil
-	return nil, nil
+	return &deckhand.DeploymentsCreateOrUpdateFuture{}, nil
 }
 
 // ValidateDeployment validates the parameters of the cluster by calling the ARM validate method.

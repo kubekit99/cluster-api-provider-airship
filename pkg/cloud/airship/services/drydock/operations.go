@@ -22,6 +22,17 @@ import (
 	"github.com/kubekit99/airship-go-api/drydock/services/drydock"
 )
 
+// From Drydock API Definition
+// func (a *Client) CreateRelabelNodesTask(params *CreateRelabelNodesTaskParams) (*CreateRelabelNodesTaskOK, error)
+// func (a *Client) GetConfig(params *GetConfigParams) (*GetConfigOK, error)
+// func (a *Client) GetHealthStatus(params *GetHealthStatusParams) (*GetHealthStatusOK, error)
+// func (a *Client) GetTaskStatusByID(params *GetTaskStatusByIDParams) (*GetTaskStatusByIDOK, error)
+// func (a *Client) LoadDesignData(params *LoadDesignDataParams) (*LoadDesignDataOK, error)
+// func (a *Client) LoadDesignDataParts(params *LoadDesignDataPartsParams) (*LoadDesignDataPartsOK, error)
+// func (a *Client) ReadBuildDataForANode(params *ReadBuildDataForANodeParams) (*ReadBuildDataForANodeOK, error)
+// func (a *Client) ReadLoadedDesignData(params *ReadLoadedDesignDataParams) (*ReadLoadedDesignDataOK, error)
+// func (a *Client) ValidateSiteDesign(params *ValidateSiteDesignParams) (*ValidateSiteDesignOK, error)
+
 // DeleteManagedDisk deletes a managed disk resource.
 func (s *Service) DeleteManagedDisk(resourceGroup string, name string) (drydock.DisksDeleteFuture, error) {
 	//JEB return s.scope.AirshipClients.Disks.Delete(s.scope.Context, resourceGroup, name)
@@ -56,7 +67,7 @@ func (s *Service) VMIfExists(resourceGroup string, name string) (*drydock.Virtua
 	//JEB 		return nil, err
 	//JEB 	}
 	//JEB return &vm, nil
-	return nil, nil
+	return &drydock.VirtualMachine{}, nil
 }
 
 // DeleteVM deletes the virtual machine.

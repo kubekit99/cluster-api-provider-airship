@@ -17,10 +17,19 @@ limitations under the License.
 package armada
 
 import (
-	//JEB "github.com/kubekit99/airship-go-api/autorest"
-	//JEB "github.com/kubekit99/airship-go-api/autorest/to"
 	"github.com/kubekit99/airship-go-api/armada/services/armada"
 )
+
+// From Armada API Definition
+// func (a *Client) GetHealth(params *GetHealthParams) (*GetHealthNoContent, error)
+// func (a *Client) GetReleases(params *GetReleasesParams) (*GetReleasesOK, error)
+// func (a *Client) GetStatus(params *GetStatusParams) (*GetStatusOK, error)
+// func (a *Client) GetVersions(params *GetVersionsParams) (*GetVersionsOK, error)
+// func (a *Client) PostApplyManifest(params *PostApplyManifestParams) (*PostApplyManifestOK, error)
+// func (a *Client) PostRollbackReleaseName(params *PostRollbackReleaseNameParams) (*PostRollbackReleaseNameOK, error)
+// func (a *Client) PostTestReleaseName(params *PostTestReleaseNameParams) (*PostTestReleaseNameOK, error)
+// func (a *Client) PostTests(params *PostTestsParams) (*PostTestsOK, error)
+// func (a *Client) PostValidateDesign(params *PostValidateDesignParams) (*PostValidateDesignOK, error)
 
 const (
 	// VnetDefaultName is the default name for the cluster's virtual armada.
@@ -61,7 +70,7 @@ func (s *Service) CreateOrUpdateVnet(resourceGroupName string, virtualNetworkNam
 	//JEB		return nil, err
 	//JEB	}
 	//JEB	return &sgFuture, nil
-	return nil, nil
+	return &armada.VirtualNetworksCreateOrUpdateFuture{}, nil
 }
 
 // WaitForVnetCreateOrUpdateFuture returns when the CreateOrUpdateVnet operation completes.
@@ -112,7 +121,7 @@ func (s *Service) NetworkSGIfExists(resourceGroupName string, networkSecurityGro
 	//JEB 		return nil, err
 	//JEB 	}
 	//JEB 	return &networkSG, nil
-	return nil, nil
+	return &armada.SecurityGroup{}, nil
 }
 
 // CreateOrUpdateNetworkSecurityGroup creates or updates the nsg resource.
@@ -160,7 +169,7 @@ func (s *Service) CreateOrUpdateNetworkSecurityGroup(resourceGroupName string, n
 	//JEB return nil, err
 	//JEB }
 	//JEB return &sgFuture, nil
-	return nil, nil
+	return &armada.SecurityGroupsCreateOrUpdateFuture{}, nil
 }
 
 // DeleteNetworkSecurityGroup deletes the nsg resource.
