@@ -17,9 +17,9 @@ limitations under the License.
 package armada
 
 import (
-	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
-	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/armada"
+	//JEB "github.com/kubekit99/airship-go-api/autorest"
+	//JEB "github.com/kubekit99/airship-go-api/autorest/to"
+	"github.com/kubekit99/airship-go-api/armada/services/armada"
 )
 
 const (

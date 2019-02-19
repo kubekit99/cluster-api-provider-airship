@@ -24,9 +24,9 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
-	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/deckhand"
+	"github.com/kubekit99/airship-go-api/autorest"
+	//JEB "github.com/kubekit99/airship-go-api/autorest/to"
+	"github.com/kubekit99/airship-go-api/deckhand/services/deckhand"
 	providerv1 "github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/services/armada"
 	clusterv1 "sigs.k8s.io/cluster-api/pkg/apis/cluster/v1alpha1"
@@ -37,7 +37,7 @@ const (
 )
 
 // CreateOrUpdateDeployment is used to create or update a kubernetes cluster. It does so by creating or updating an ARM deployment.
-func (s *Service) CreateOrUpdateDeployment(machine *clusterv1.Machine, clusterConfig *providerv1.AirshipClusterProviderSpec, machineConfig *providerv1.AirshipMachineProviderSpec) (*resources.DeploymentsCreateOrUpdateFuture, error) {
+func (s *Service) CreateOrUpdateDeployment(machine *clusterv1.Machine, clusterConfig *providerv1.AirshipClusterProviderSpec, machineConfig *providerv1.AirshipMachineProviderSpec) (*deckhand.DeploymentsCreateOrUpdateFuture, error) {
 	// Parse the ARM template
 	//JEB template, err := readJSON(templateFile)
 	//JEB if err != nil {
@@ -47,11 +47,11 @@ func (s *Service) CreateOrUpdateDeployment(machine *clusterv1.Machine, clusterCo
 	//JEB if err != nil {
 	//JEB return nil, err
 	//JEB }
-	//JEB deployment := resources.Deployment{
-	//JEB Properties: &resources.DeploymentProperties{
+	//JEB deployment := deckhand.Deployment{
+	//JEB Properties: &deckhand.DeploymentProperties{
 	//JEB Template:   template,
 	//JEB Parameters: params,
-	//JEB Mode:       resources.Incremental,
+	//JEB Mode:       deckhand.Incremental,
 	//JEB },
 	//JEB }
 	//JEB
@@ -74,11 +74,11 @@ func (s *Service) ValidateDeployment(machine *clusterv1.Machine, clusterConfig *
 	//JEB if err != nil {
 	//JEB return err
 	//JEB }
-	//JEB deployment := resources.Deployment{
-	//JEB Properties: &resources.DeploymentProperties{
+	//JEB deployment := deckhand.Deployment{
+	//JEB Properties: &deckhand.DeploymentProperties{
 	//JEB Template:   template,
 	//JEB Parameters: params,
-	//JEB Mode:       resources.Incremental, // Do not delete and re-create matching resources that already exist
+	//JEB Mode:       deckhand.Incremental, // Do not delete and re-create matching resources that already exist
 	//JEB },
 	//JEB }
 	//JEB res, err := s.scope.AirshipClients.Deployments.Validate(s.scope.Context, clusterConfig.ResourceGroup, machine.ObjectMeta.Name, deployment)
@@ -90,13 +90,13 @@ func (s *Service) ValidateDeployment(machine *clusterv1.Machine, clusterConfig *
 }
 
 // GetDeploymentResult retrieves the result of the ARM deployment operation.
-func (s *Service) GetDeploymentResult(future resources.DeploymentsCreateOrUpdateFuture) (de resources.DeploymentExtended, err error) {
+func (s *Service) GetDeploymentResult(future deckhand.DeploymentsCreateOrUpdateFuture) (de deckhand.DeploymentExtended, err error) {
 	//JEB return future.Result(s.scope.AirshipClients.Deployments)
-	return resources.DeploymentExtended{}, nil
+	return deckhand.DeploymentExtended{}, nil
 }
 
 // WaitForDeploymentsCreateOrUpdateFuture returns when the ARM operation completes.
-func (s *Service) WaitForDeploymentsCreateOrUpdateFuture(future resources.DeploymentsCreateOrUpdateFuture) error {
+func (s *Service) WaitForDeploymentsCreateOrUpdateFuture(future deckhand.DeploymentsCreateOrUpdateFuture) error {
 	//JEB return future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Deployments.Client)
 	return nil
 }
@@ -304,16 +304,16 @@ func base64EncodeCommand(command string) *string {
 }
 
 // CreateOrUpdateGroup creates or updates an airship resource group.
-func (s *Service) CreateOrUpdateGroup(resourceGroupName string, location string) (resources.Group, error) {
-	//JEB return s.scope.AirshipClients.Groups.CreateOrUpdate(s.scope.Context, resourceGroupName, resources.Group{Location: to.StringPtr(location)})
-	return resources.Group{}, nil
+func (s *Service) CreateOrUpdateGroup(resourceGroupName string, location string) (deckhand.Group, error) {
+	//JEB return s.scope.AirshipClients.Groups.CreateOrUpdate(s.scope.Context, resourceGroupName, deckhand.Group{Location: to.StringPtr(location)})
+	return deckhand.Group{}, nil
 
 }
 
 // DeleteGroup deletes an airship resource group.
-func (s *Service) DeleteGroup(resourceGroupName string) (resources.GroupsDeleteFuture, error) {
+func (s *Service) DeleteGroup(resourceGroupName string) (deckhand.GroupsDeleteFuture, error) {
 	//JEB return s.scope.AirshipClients.Groups.Delete(s.scope.Context, resourceGroupName)
-	return resources.GroupsDeleteFuture{}, nil
+	return deckhand.GroupsDeleteFuture{}, nil
 }
 
 // CheckGroupExistence checks oif the resource group exists or not.
@@ -323,7 +323,7 @@ func (s *Service) CheckGroupExistence(resourceGroupName string) (autorest.Respon
 }
 
 // WaitForGroupsDeleteFuture returns when the DeleteGroup operation completes.
-func (s *Service) WaitForGroupsDeleteFuture(future resources.GroupsDeleteFuture) error {
+func (s *Service) WaitForGroupsDeleteFuture(future deckhand.GroupsDeleteFuture) error {
 	//JEB return future.WaitForCompletionRef(s.scope.Context, s.scope.AirshipClients.Groups.Client)
 	return nil
 }

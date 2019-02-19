@@ -18,10 +18,10 @@ package actuators
 
 import (
 	"context"
-	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/auth"
-	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/drydock"
-	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/armada"
-	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/deckhand"
+	//JEB "github.com/kubekit99/airship-go-api/autorest/auth"
+	//JEB "github.com/kubekit99/airship-go-api/drydock/services/drydock"
+	//JEB "github.com/kubekit99/airship-go-api/armada/services/armada"
+	//JEB "github.com/kubekit99/airship-go-api/deckhand/services/deckhand"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
 	"github.com/pkg/errors"
 	"k8s.io/klog"

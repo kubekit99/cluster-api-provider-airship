@@ -17,10 +17,10 @@ limitations under the License.
 package actuators
 
 import (
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/armada"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/deckhand"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/drydock"
+	"github.com/kubekit99/airship-go-api/armada/services/armada"
+	"github.com/kubekit99/airship-go-api/autorest"
+	"github.com/kubekit99/airship-go-api/deckhand/services/deckhand"
+	"github.com/kubekit99/airship-go-api/drydock/services/drydock"
 	providerv1 "github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
 	clusterv1 "sigs.k8s.io/cluster-api/pkg/apis/cluster/v1alpha1"
 )
@@ -43,9 +43,9 @@ type AirshipClients struct {
 	PublicIPAddresses armada.PublicIPAddressesClient
 
 	// Resources
-	Groups      resources.GroupsClient
-	Deployments resources.DeploymentsClient
-	Tags        resources.TagsClient
+	Groups      deckhand.GroupsClient
+	Deployments deckhand.DeploymentsClient
+	Tags        deckhand.TagsClient
 }
 
 // AirshipDrydockClient defines the operations that will interact with the Airship Drydock API
@@ -86,14 +86,14 @@ type AirshipArmadaClient interface {
 // AirshipDeckhandClient defines the operations that will interact with the Airship Resources API
 type AirshipDeckhandClient interface {
 	// Resource Groups Operations
-	CreateOrUpdateGroup(resourceGroupName string, location string) (resources.Group, error)
-	DeleteGroup(resourceGroupName string) (resources.GroupsDeleteFuture, error)
+	CreateOrUpdateGroup(resourceGroupName string, location string) (deckhand.Group, error)
+	DeleteGroup(resourceGroupName string) (deckhand.GroupsDeleteFuture, error)
 	CheckGroupExistence(rgName string) (autorest.Response, error)
-	WaitForGroupsDeleteFuture(future resources.GroupsDeleteFuture) error
+	WaitForGroupsDeleteFuture(future deckhand.GroupsDeleteFuture) error
 
 	// Deployment Operations
-	CreateOrUpdateDeployment(machine *clusterv1.Machine, clusterConfig *providerv1.AirshipClusterProviderSpec, machineConfig *providerv1.AirshipMachineProviderSpec) (*resources.DeploymentsCreateOrUpdateFuture, error)
-	GetDeploymentResult(future resources.DeploymentsCreateOrUpdateFuture) (de resources.DeploymentExtended, err error)
+	CreateOrUpdateDeployment(machine *clusterv1.Machine, clusterConfig *providerv1.AirshipClusterProviderSpec, machineConfig *providerv1.AirshipMachineProviderSpec) (*deckhand.DeploymentsCreateOrUpdateFuture, error)
+	GetDeploymentResult(future deckhand.DeploymentsCreateOrUpdateFuture) (de deckhand.DeploymentExtended, err error)
 	ValidateDeployment(machine *clusterv1.Machine, clusterConfig *providerv1.AirshipClusterProviderSpec, machineConfig *providerv1.AirshipMachineProviderSpec) error
-	WaitForDeploymentsCreateOrUpdateFuture(future resources.DeploymentsCreateOrUpdateFuture) error
+	WaitForDeploymentsCreateOrUpdateFuture(future deckhand.DeploymentsCreateOrUpdateFuture) error
 }

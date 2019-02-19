@@ -17,9 +17,9 @@ limitations under the License.
 package drydock
 
 import (
-	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest"
-	//JEB "github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/autorest/to"
-	"github.com/kubekit99/cluster-api-provider-airship/pkg/airship-go-api/services/drydock"
+	//JEB "github.com/kubekit99/airship-go-api/autorest"
+	//JEB "github.com/kubekit99/airship-go-api/autorest/to"
+	"github.com/kubekit99/airship-go-api/drydock/services/drydock"
 )
 
 // DeleteManagedDisk deletes a managed disk resource.
