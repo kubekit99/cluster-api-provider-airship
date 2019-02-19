@@ -21,15 +21,19 @@ import (
 	"github.com/kubekit99/airship-go-api/autorest"
 	"github.com/kubekit99/airship-go-api/deckhand/services/deckhand"
 	"github.com/kubekit99/airship-go-api/drydock/services/drydock"
+	// "github.com/kubekit99/airship-go-api/promenade/services/promenade"
+	// "github.com/kubekit99/airship-go-api/shipyard/services/shipyard"
 	providerv1 "github.com/kubekit99/cluster-api-provider-airship/pkg/apis/airshipprovider/v1alpha1"
 	clusterv1 "sigs.k8s.io/cluster-api/pkg/apis/cluster/v1alpha1"
 )
 
 // AirshipClients contains all the Airship clients used by the scopes.
 type AirshipClients struct {
-	Drydock  AirshipDrydockClient
-	Armada   AirshipArmadaClient
-	Deckhand AirshipDeckhandClient
+	Drydock   AirshipDrydockClient
+	Armada    AirshipArmadaClient
+	Deckhand  AirshipDeckhandClient
+	Shipyard  AirshipShipyardClient
+	Promenade AirshipPromenadeClient
 
 	// Drydock
 	VM    drydock.VirtualMachinesClient
@@ -96,4 +100,14 @@ type AirshipDeckhandClient interface {
 	GetDeploymentResult(future deckhand.DeploymentsCreateOrUpdateFuture) (de deckhand.DeploymentExtended, err error)
 	ValidateDeployment(machine *clusterv1.Machine, clusterConfig *providerv1.AirshipClusterProviderSpec, machineConfig *providerv1.AirshipMachineProviderSpec) error
 	WaitForDeploymentsCreateOrUpdateFuture(future deckhand.DeploymentsCreateOrUpdateFuture) error
+}
+
+// AirshipShipyardClient defines the operations that will interact with the Airship Resources API
+type AirshipShipyardClient interface {
+	WaitForSomething(thething string) (string, error)
+}
+
+// AirshipPromenadeClient defines the operations that will interact with the Airship Resources API
+type AirshipPromenadeClient interface {
+	WaitForSomething(thething string) (string, error)
 }

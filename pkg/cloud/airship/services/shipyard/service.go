@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package armada
+package shipyard
 
 import (
 	"os"
@@ -23,7 +23,7 @@ import (
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators"
 
 	httptransport "github.com/go-openapi/runtime/client"
-	apiclient "github.com/kubekit99/airship-go-api/armada/client"
+	apiclient "github.com/kubekit99/airship-go-api/shipyard/client"
 )
 
 // Service holds a collection of interfaces.
@@ -31,7 +31,7 @@ import (
 // One alternative is to have a large list of functions from the ec2 client.
 type Service struct {
 	scope         *actuators.Scope
-	airshipclient *apiclient.Armada
+	airshipclient *apiclient.Shipyard
 }
 
 // NewService returns a new service given the api clients.

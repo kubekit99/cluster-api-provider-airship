@@ -17,19 +17,33 @@ limitations under the License.
 package deckhand
 
 import (
+	"os"
+
+	"github.com/go-openapi/strfmt"
 	"github.com/kubekit99/cluster-api-provider-airship/pkg/cloud/airship/actuators"
+
+	httptransport "github.com/go-openapi/runtime/client"
+	apiclient "github.com/kubekit99/airship-go-api/deckhand/client"
 )
 
 // Service holds a collection of interfaces.
 // The interfaces are broken down like this to group functions together.
 // One alternative is to have a large list of functions from the ec2 client.
 type Service struct {
-	scope *actuators.Scope
+	scope         *actuators.Scope
+	airshipclient *apiclient.Deckhand
 }
 
 // NewService returns a new service given the api clients.
 func NewService(scope *actuators.Scope) *Service {
+	// create the transport
+	transport := httptransport.New(os.Getenv("TODOLIST_HOST"), "", nil)
+
+	// create the API client, with the transport
+	client := apiclient.New(transport, strfmt.Default)
+
 	return &Service{
-		scope: scope,
+		scope:         scope,
+		airshipclient: client,
 	}
 }
